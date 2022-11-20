@@ -1,9 +1,15 @@
 {
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
+    "@fortawesome/fontawesome-free": "^6.2.1",
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@rails/activestorage": "^7.0.4",
+    "@rails/ujs": "^7.0.4",
     "@rails/webpacker": "5.4.3",
     "axios": "^1.1.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "channels": "^0.0.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
