@@ -45,6 +45,7 @@ gem "bootsnap", require: false
 gem 'fast_jsonapi', '~> 1.1', '>= 1.1.1'
 gem 'webpacker'
 gem 'react-rails'
+gem "devise"
 
 # Use Sass to process CSS
 # gem "sassc-rails"

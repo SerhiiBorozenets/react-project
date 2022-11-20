@@ -1,7 +1,16 @@
 import React from "react";
 
-const Project = () => {
-  return<div>This is project#show list</div>
+const Project = (props) => {
+  return(
+    <div className="card">
+      <div className="project-id">
+        {props.attributes.user_id}
+      </div>
+      <div className="project-name">
+        {props.attributes.name}
+      </div>
+    </div>
+  )
 }
 
 export default Project
