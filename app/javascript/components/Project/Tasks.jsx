@@ -25,7 +25,7 @@ const Tasks = (props) => {
                 <table className="table mb-0">
                   <thead>
                   <tr>
-                    <th scope="col">Project name</th>
+                    <th scope="col">Task title</th>
                     <th scope="col">Deadline</th>
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
