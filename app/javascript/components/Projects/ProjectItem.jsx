@@ -2,7 +2,6 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 const ProjectItem = (props) => {
-  {console.log("props", props.attributes)}
   return(
     <tr className="fw-normal">
       <td className="align-middle">
