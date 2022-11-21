@@ -7,4 +7,8 @@ class Project < ApplicationRecord
   def slugify
     self.slug = name.parameterize
   end
+
+  def tasks_count
+    self.tasks.length
+  end
 end

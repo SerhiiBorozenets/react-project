@@ -1,5 +1,4 @@
 import React from "react";
-import ProjectItem from "../Projects/ProjectItem";
 import TaskItem from "./TaskItem";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 
@@ -7,9 +6,9 @@ const Tasks = (props) => {
   const {name} = props.attributes
   const tasks = props.tasks
 
-  const taskItem = tasks.map( item => {
+  const taskItem = tasks.map((item, index) => {
     return (
-      <TaskItem key={item.attributes.id} attributes={item.attributes} />
+      <TaskItem key={index} attributes={item.attributes} />
     )
   })
 
