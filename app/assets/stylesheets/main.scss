@@ -1,0 +1,9 @@
+.home-page {
+  background-color: #eee;
+  height: calc(100vh - 46px);
+}
+.table-scroll {
+  position: relative;
+  height: 400px;
+  overflow: auto
+}

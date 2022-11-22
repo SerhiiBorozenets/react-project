@@ -9,6 +9,7 @@ const TaskForm = (props) => {
       <option key={index} value={index}>{status}</option>
     )
   })
+  // const {show, toggleShow} = props
 
   return <Form onSubmit={props.handleSubmit}>
       <Form.Group className="mb-3" onChange={props.handleChange} value={props.task.name}>
@@ -33,9 +34,12 @@ const TaskForm = (props) => {
         </Form.Select>
       </Form.Group>
 
-      <Button className="text-end" variant="primary" type="submit">
-        Submit
-      </Button>
+      <div className="text-end">
+        <Button className="text-end" variant="primary" type="submit">
+          Submit
+        </Button>
+      </div>
+
     </Form>
 }
 

@@ -19,7 +19,7 @@ const Tasks = (props) => {
   })
 
   return(
-    <section className="vh-100" style={{backgroundColor: '#eee'}}>
+    <section className="home-page">
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-12 col-xl-10">
@@ -27,7 +27,7 @@ const Tasks = (props) => {
               <div className="card-header p-3">
                 <h5 className="mb-0"><i className="me-2 text-dark"><img src={tasksIcon} alt={"icon"}/></i>Project name: {name}</h5>
               </div>
-              <div className="card-body" style={{position: 'relative', height: '400px', overflow: "scroll"}}>
+              <div className="card-body table-scroll">
                 <table className="table mb-0">
                   <thead>
                     <tr>
