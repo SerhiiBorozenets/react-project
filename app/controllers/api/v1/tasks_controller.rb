@@ -2,7 +2,7 @@ class Api::V1::TasksController < ApplicationController
   protect_from_forgery with: :null_session
 
   def create
-    task = Task.new(task_params)
+    task = project.tasks.new(task_params)
 
     if task.save
       render json: TaskSerializer.new(task).serialized_json
@@ -24,6 +24,11 @@ class Api::V1::TasksController < ApplicationController
   private
 
   def task_params
+    params[:task][:status] = params[:task][:status].to_i
     params.require(:task).permit(:name, :status, :completed, :deadline, :project_id)
+  end
+
+  def project
+    @project ||= Project.find(params[:project_id])
   end
 end

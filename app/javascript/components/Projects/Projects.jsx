@@ -27,7 +27,7 @@ const Projects = () => {
               <div className="card-header p-3">
                 <h5 className="mb-0"><i className="me-2 text-dark"><img src={tasksIcon} alt={"icon"}/></i>Projects list</h5>
               </div>
-              <div className="card-body" data-mdb-perfect-scrollbar="true" style={{position: 'relative', height: '400px'}}>
+              <div className="card-body" style={{position: 'relative', height: '400px', overflow: "scroll"}}>
                 <table className="table mb-0">
                   <thead>
                   <tr>
