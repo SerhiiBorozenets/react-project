@@ -13,6 +13,6 @@ class Project < ApplicationRecord
   end
 
   def deadline
-    tasks.order(deadline: :desc).first
+    tasks.order(deadline: :desc).first.deadline
   end
 end

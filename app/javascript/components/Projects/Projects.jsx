@@ -12,6 +12,11 @@ const Projects = () => {
     .catch(resp => console.log(resp))
   }, [projects.length])
 
+  const TITLES = ['Project name', 'Tasks Count', 'Deadline', 'Actions'];
+  const titles = TITLES.map( (title, index) => {
+    return <th scope="col" key={index}>{title}</th>
+  })
+
   const projectItem = projects.map((item, index) => {
     return (
       <ProjectItem key={index} attributes={item.attributes} />
@@ -31,10 +36,7 @@ const Projects = () => {
                 <table className="table mb-0">
                   <thead>
                   <tr>
-                    <th scope="col">Project name</th>
-                    <th scope="col">Tasks Count</th>
-                    <th scope="col">Deadline</th>
-                    <th scope="col">Actions</th>
+                    {titles}
                   </tr>
                   </thead>
                   <tbody>

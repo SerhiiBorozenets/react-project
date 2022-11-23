@@ -10,29 +10,24 @@ const Project = () => {
   const [task, setTask] = useState({})
 
   const handleChange = (e) => {
-    e.preventDefault()
     setTask(Object.assign({}, task, {[e.target.name]: e.target.value}))
   }
   const handleSubmit = (e) => {
-    e.preventDefault()
-
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
     const project_id = project.data.id
     axios.post('/api/v1/tasks', {task, project_id})
       .then(resp => {
-        {console.log("task2", task)}
         const included = [...project.included, resp.data]
         setProject({...project, included})
-        setTask({name: '', deadline: '', status: 0, completed: 'false'})
+        setTask({name: '', deadline: '', status: '', completed: false})
       })
       .catch(resp => {})
   }
 
   useEffect(()=> {
     const url = `/api/v1/projects/${params.slug}`
-
     axios.get(url)
       .then(resp => {
         setProject(resp.data)
