@@ -2,20 +2,19 @@ import React from "react";
 import {PencilSquare, Trash} from 'react-bootstrap-icons';
 import moment from "moment/moment";
 
-const TaskItem = (props) => {
+const TaskItem = ({ task }) => {
   const badgeMap = {
     low: 'success',
     middle: 'warning',
     high: 'danger'
   }
-  const status = props.attributes?.status
-  const deadline = props.attributes?.deadline
-  const deadlineFormat = deadline ? moment(deadline).format('DD.MM.YYYY') : ""
+  const {name, deadline, status} = task.attributes
+  const deadlineFormat = deadline ? moment(deadline).format('DD.MM.YYYY') : ''
 
   return(
     <tr className="fw-normal">
       <td className="align-middle">
-        <span> {props.attributes?.name}</span>
+        <span> {name}</span>
       </td>
       <td className="align-middle">
         <span>{deadlineFormat}</span>

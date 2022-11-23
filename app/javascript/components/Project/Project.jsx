@@ -12,14 +12,14 @@ const Project = () => {
   const handleChange = (e) => {
     setTask(Object.assign({}, task, {[e.target.name]: e.target.value}))
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async () => {
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
     const project_id = project.data.id
-    axios.post('/api/v1/tasks', {task, project_id})
+    await axios.post('/api/v1/tasks', {task, project_id})
       .then(resp => {
-        const included = [...project.included, resp.data]
+        const included = [...project.included, resp.data.data]
         setProject({...project, included})
         setTask({name: '', deadline: '', status: '', completed: false})
       })
@@ -40,12 +40,11 @@ const Project = () => {
     <>
       { loaded &&
         <>
-          <Tasks attributes={project.data.attributes}
+          <Tasks project={project}
                  handleChange={handleChange}
                  handleSubmit={handleSubmit}
                  tasks={project.included}
                  task={task}
-                 project={project}
           />
         </>
       }

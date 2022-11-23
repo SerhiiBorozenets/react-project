@@ -1,28 +1,35 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 
-const ModalTaskForm = (props) => {
-
-  const OPTIONS = ['Low', "Middle", "High"];
+const ModalTaskForm = ({ handleShow, handleSubmit, task, show, handleChange }) => {
+const [disable, setDisable] = useState(true)
+  const OPTIONS = ['--Choose an option--', 'Low', "Middle", "High"];
   const statusOptions = OPTIONS.map( (status, index) => {
     return <option key={index} value={status.toLowerCase()}>{status}</option>
   })
 
   const onHandleSave = () => {
-    props.handleShow()
-    props.handleSubmit()
-    window.location.reload();
+    handleShow()
+    handleSubmit()
   }
 
-  return <Modal show={props.show} onHide={props.handleShow} animation={false}>
-    <Modal.Header closeButton>
+  useEffect(()=> {
+    if(task.name) {
+      setDisable(false)
+    } else {
+      setDisable(true)
+    }
+  }, [task.name])
+
+  return <Modal show={show} onHide={handleShow} animation={false}>
+    <Modal.Header closeButton style={{backgroundColor: "#eee"}}>
       <Modal.Title>Create new task</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <Form>
-        <Form.Group className="mb-3" onChange={props.handleChange} value={props.task.name}>
+        <Form.Group className="mb-3" onChange={handleChange} value={task.name}>
           <Form.Label>Task title</Form.Label>
           <Form.Control type="text" name="name" placeholder="Enter task title" />
         </Form.Group>
@@ -33,22 +40,23 @@ const ModalTaskForm = (props) => {
             type="date"
             name="deadline"
             placeholder="Due date"
-            value={props.task.deadline}
-            onChange={props.handleChange}
+            value={task.deadline || ''}
+            onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Select onChange={props.handleChange} name="status">
+          <Form.Label>Select priority</Form.Label>
+          <Form.Select onChange={handleChange} name="status">
             {statusOptions}
           </Form.Select>
         </Form.Group>
       </Form>
     </Modal.Body>
 
-    <Modal.Footer>
-      <Button variant="primary" onClick={onHandleSave}>
-        Save Changes
+    <Modal.Footer style={{backgroundColor: "#eee"}}>
+      <Button variant="primary" disabled={disable} onClick={onHandleSave}>
+        Save
       </Button>
     </Modal.Footer>
   </Modal>

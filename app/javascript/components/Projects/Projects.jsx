@@ -17,9 +17,9 @@ const Projects = () => {
     return <th scope="col" key={index}>{title}</th>
   })
 
-  const projectItem = projects.map((item, index) => {
+  const projectItem = projects.map((project, index) => {
     return (
-      <ProjectItem key={index} attributes={item.attributes} />
+      <ProjectItem key={index} project={project.attributes} />
     )
   })
 

@@ -1,6 +1,8 @@
 class Project < ApplicationRecord
-  has_many :tasks, dependent: :destroy
+  has_many :tasks, -> { order(status: :desc) }, dependent: :destroy
   belongs_to :user
+
+  validates :name, presence: true
 
   before_create :slugify
 
