@@ -23,7 +23,19 @@ const Project = () => {
         setProject({...project, included})
         setTask({title: '', deadline: '', status: '', completed: false})
       })
-      .catch(resp => {})
+      .catch(resp => {console.log(resp)})
+  }
+
+  const removeTask = async (id) => {
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    await axios.delete(`/api/v1/tasks/${id}`)
+      .then(() => {
+        const included = [...project.included.filter(item => item.id !== String(id))]
+        setProject({...project, included})
+    })
+    .catch(resp => {console.log(resp)})
   }
 
   useEffect(()=> {
@@ -43,6 +55,7 @@ const Project = () => {
           <Tasks project={project}
                  handleChange={handleChange}
                  handleSubmit={handleSubmit}
+                 removeTask={removeTask}
                  tasks={project.included}
                  task={task}
           />

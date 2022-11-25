@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TaskItem from "./TaskItem";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import {Button} from "react-bootstrap";
 import ModalTaskForm from "./ModalTaskForm";
 
-const Tasks = ({ project, handleChange, handleSubmit, tasks, task }) => {
+const Tasks = ({ project, handleChange, handleSubmit, tasks, task, removeTask }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
 
@@ -12,9 +12,10 @@ const Tasks = ({ project, handleChange, handleSubmit, tasks, task }) => {
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
+
   const taskItem = tasks.map((task, index) => {
     return (
-      <TaskItem key={index} task={task} />
+      <TaskItem key={index} task={task} removeTask={removeTask} />
     )
   })
 

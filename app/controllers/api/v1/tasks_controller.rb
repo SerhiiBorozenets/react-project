@@ -12,10 +12,10 @@ class Api::V1::TasksController < ApplicationController
   end
 
   def destroy
-    task = Task.find(params[:id])
+    task = Task.find_by(id: params[:id])
 
     if task.destroy
-      head :no_connect, notice: "Project was successfully destroyed."
+      head :no_content, notice: "Project was successfully destroyed."
     else
       render json: {error: task.errors.message }, status: 422
     end

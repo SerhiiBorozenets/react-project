@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   has_many :tasks, -> { order(status: :desc) }, dependent: :destroy
-  belongs_to :user
+  # belongs_to :user
 
   validates :title, presence: true
 

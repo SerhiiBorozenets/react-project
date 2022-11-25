@@ -12,7 +12,7 @@ const Projects = () => {
     .catch(resp => console.log(resp))
   }, [projects])
 
-  const removeProject = async (slug, e) => {
+  const removeProject = async (slug) => {
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
