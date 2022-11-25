@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 
 const ModalTaskForm = ({ handleShow, handleSubmit, task, show, handleChange }) => {
-const [disable, setDisable] = useState(true)
+  const [disable, setDisable] = useState(true)
   const OPTIONS = ['--Choose an option--', 'Low', "Middle", "High"];
   const statusOptions = OPTIONS.map( (status, index) => {
     return <option key={index} value={status.toLowerCase()}>{status}</option>
@@ -16,12 +16,12 @@ const [disable, setDisable] = useState(true)
   }
 
   useEffect(()=> {
-    if(task.name) {
+    if(task.title) {
       setDisable(false)
     } else {
       setDisable(true)
     }
-  }, [task.name])
+  }, [task.title])
 
   return <Modal show={show} onHide={handleShow} animation={false}>
     <Modal.Header closeButton style={{backgroundColor: "#eee"}}>
@@ -29,13 +29,13 @@ const [disable, setDisable] = useState(true)
     </Modal.Header>
     <Modal.Body>
       <Form>
-        <Form.Group className="mb-3" onChange={handleChange} value={task.name}>
+        <Form.Group className="mb-3" onChange={handleChange} value={task.title}>
           <Form.Label>Task title</Form.Label>
-          <Form.Control type="text" name="name" placeholder="Enter task title" />
+          <Form.Control type="text" name="title" placeholder="Enter task title" autoFocus />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Enter deadline</Form.Label>
+          <Form.Label>Enter due date</Form.Label>
           <Form.Control
             type="date"
             name="deadline"

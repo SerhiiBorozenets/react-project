@@ -24,7 +24,7 @@ class Api::V1::TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name, :status, :completed, :deadline)
+    params.require(:task).permit(:title, :status, :completed, :deadline)
   end
 
   def project

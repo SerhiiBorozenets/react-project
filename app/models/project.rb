@@ -2,12 +2,12 @@ class Project < ApplicationRecord
   has_many :tasks, -> { order(status: :desc) }, dependent: :destroy
   belongs_to :user
 
-  validates :name, presence: true
+  validates :title, presence: true
 
   before_create :slugify
 
   def slugify
-    slug = name.parameterize
+    self.slug = title.parameterize
   end
 
   def tasks_count
@@ -15,6 +15,6 @@ class Project < ApplicationRecord
   end
 
   def deadline
-    tasks.order(deadline: :desc).first.deadline
+    tasks&.order(deadline: :desc)&.first&.deadline
   end
 end

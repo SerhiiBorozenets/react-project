@@ -65,7 +65,7 @@ class Api::V1::ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:name, :user_id)
+      params.require(:project).permit(:title, :user_id)
     end
 
     def options

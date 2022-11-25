@@ -10,16 +10,24 @@ const Projects = () => {
     axios.get('/api/v1/projects.json')
     .then( resp => setProjects(resp.data.data))
     .catch(resp => console.log(resp))
-  }, [projects.length])
+  }, [projects])
 
-  const TITLES = ['Project name', 'Tasks Count', 'Deadline', 'Actions'];
+  const removeProject = async (slug, e) => {
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    await axios.delete(`/api/v1/projects/${slug}`)
+      .then( resp => console.log(resp) )
+  }
+
+  const TITLES = ['Project name', 'Tasks Count', 'Due date', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
 
   const projectItem = projects.map((project, index) => {
     return (
-      <ProjectItem key={index} project={project.attributes} />
+      <ProjectItem key={index} project={project.attributes} removeProject={removeProject}/>
     )
   })
 

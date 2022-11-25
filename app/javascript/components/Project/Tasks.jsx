@@ -8,7 +8,7 @@ const Tasks = ({ project, handleChange, handleSubmit, tasks, task }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
 
-  const TITLES = ['Task title', 'Deadline', 'Status', 'Actions'];
+  const TITLES = ['Task title', 'Due date', 'Status', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
@@ -31,7 +31,7 @@ const Tasks = ({ project, handleChange, handleSubmit, tasks, task }) => {
                       <a href="/">
                         <img src={tasksIcon} alt={"icon"}/>
                       </a>
-                    </i>Project name: {project.name}</h5>
+                    </i>Project title: {project.title}</h5>
                 </div>
                 <div className="card-body table-scroll">
                   <table className="table mb-0">

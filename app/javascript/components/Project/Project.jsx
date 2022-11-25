@@ -21,7 +21,7 @@ const Project = () => {
       .then(resp => {
         const included = [...project.included, resp.data.data]
         setProject({...project, included})
-        setTask({name: '', deadline: '', status: '', completed: false})
+        setTask({title: '', deadline: '', status: '', completed: false})
       })
       .catch(resp => {})
   }

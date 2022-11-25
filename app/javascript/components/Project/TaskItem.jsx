@@ -8,13 +8,13 @@ const TaskItem = ({ task }) => {
     middle: 'warning',
     high: 'danger'
   }
-  const {name, deadline, status} = task.attributes
+  const {title, deadline, status} = task.attributes
   const deadlineFormat = deadline ? moment(deadline).format('DD.MM.YYYY') : ''
 
   return(
     <tr className="fw-normal">
       <td className="align-middle">
-        <span> {name}</span>
+        <span> {title}</span>
       </td>
       <td className="align-middle">
         <span>{deadlineFormat}</span>
