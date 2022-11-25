@@ -24,7 +24,7 @@ const ModalTaskForm = ({ handleShow, handleSubmit, task, show, handleChange }) =
   }, [task.title])
 
   return <Modal show={show} onHide={handleShow} animation={false}>
-    <Modal.Header closeButton style={{backgroundColor: "#eee"}}>
+    <Modal.Header className="back-ground-header">
       <Modal.Title>Create new task</Modal.Title>
     </Modal.Header>
     <Modal.Body>
@@ -54,7 +54,7 @@ const ModalTaskForm = ({ handleShow, handleSubmit, task, show, handleChange }) =
       </Form>
     </Modal.Body>
 
-    <Modal.Footer style={{backgroundColor: "#eee"}}>
+    <Modal.Footer className="back-ground-header">
       <Button variant="primary" disabled={disable} onClick={onHandleSave}>
         Save
       </Button>

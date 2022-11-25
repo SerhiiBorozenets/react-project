@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import TaskItem from "./TaskItem";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import {Button} from "react-bootstrap";
-import ModalTaskForm from "./ModalTaskForm";
+import ModalTaskForm from "../Modals/ModalTaskForm";
 
 const Tasks = ({ project, handleChange, handleSubmit, tasks, task, removeTask }) => {
   const [show, setShow] = useState(false);

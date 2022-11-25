@@ -2,22 +2,48 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import ProjectItem from "./ProjectItem";
+import {Button} from "react-bootstrap";
+import ModalProjectForm from "../Modals/ModalProjectForm";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faPlus} from '@fortawesome/free-solid-svg-icons'
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(p => !p);
+  const [project, setProject] = useState({})
+
+  const onChangeProject = (e) => {
+    setProject(Object.assign({}, project, {[e.target.name]: e.target.value}))
+  }
 
   useEffect(()=> {
     axios.get('/api/v1/projects.json')
     .then( resp => setProjects(resp.data.data))
     .catch(resp => console.log(resp))
-  }, [projects])
+  }, [projects.length])
+
+  const createProject = async () => {
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    await axios.post('/api/v1/projects', project)
+      .then(resp => {
+        setProjects(projects => [...projects, resp.data.data]);
+      })
+      .catch(resp => {console.log(resp)})
+  }
 
   const removeProject = async (slug) => {
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
     await axios.delete(`/api/v1/projects/${slug}`)
-      .then( resp => console.log(resp) )
+      .then( () => {
+        const newProjects = projects.filter(item => item.attributes.slug !== String(slug))
+        setProjects( [...newProjects]);
+      })
+      .catch(resp => {console.log(resp)})
   }
 
   const TITLES = ['Project name', 'Tasks Count', 'Due date', 'Actions'];
@@ -52,11 +78,24 @@ const Projects = () => {
                   </tbody>
                 </table>
               </div>
+              <div className="card-footer text-end p-3">
+                <Button variant="primary" onClick={handleShow} >
+                  <FontAwesomeIcon icon={faPlus} />
+                  Add Project
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <ModalProjectForm
+      project={project}
+      show={show}
+      handleShow={handleShow}
+      onChangeProject={onChangeProject}
+      createProject={createProject}
+    />
   </>
 }
 
