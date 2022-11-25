@@ -2,7 +2,6 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 export const sweetAlertRemove = (object, action) => {
-  {console.log(object)}
   const MySwal = withReactContent(Swal)
   MySwal.fire({
     title: `Are you sure you want to remove ${object.title}?`,
