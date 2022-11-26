@@ -5,7 +5,7 @@ import moment from "moment";
 import {sweetAlertRemove} from "../SweetAlert/alertHelpers";
 
 const ProjectItem = ({ project, removeProject }) => {
-  const deadlineFormat = project.deadline ? moment(project.deadline).format('DD.MM.YYYY') : ""
+  const dueDateFormat = project.due_date ? moment(project.due_date).format('DD.MM.YYYY') : ""
 
   const removeProjectConfirm = () => {
     sweetAlertRemove(project, removeProject)
@@ -22,7 +22,7 @@ const ProjectItem = ({ project, removeProject }) => {
         <span style={{paddingLeft: "40px"}}> {project.tasks_count}</span>
       </td>
       <td className="align-middle">
-        <span>{deadlineFormat}</span>
+        <span>{dueDateFormat}</span>
       </td>
       <td className="align-middle mx-2">
         <Link to="#"  onClick={removeProjectConfirm} >

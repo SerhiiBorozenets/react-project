@@ -11,6 +11,16 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
+  def update
+    task = Task.find_by(id: params[:id])
+
+    if task.update(task_params)
+      render json: TaskSerializer.new(task).serialized_json
+    else
+      render json: {error: task.errors.message }, status: 422
+    end
+  end
+
   def destroy
     task = Task.find_by(id: params[:id])
 
@@ -24,7 +34,7 @@ class Api::V1::TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :status, :completed, :deadline)
+    params.require(:task).permit(:title, :status, :completed, :due_date)
   end
 
   def project

@@ -4,18 +4,16 @@ import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import {Button} from "react-bootstrap";
 import ModalTaskForm from "../Modals/ModalTaskForm";
 
-const Tasks = ({ project, handleChange, handleSubmit, tasks, task, removeTask }) => {
+const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, updateTask }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
-
   const TITLES = ['Task title', 'Due date', 'Status', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
-
-  const taskItem = tasks.map((task, index) => {
+  const taskItem = tasks.map((task) => {
     return (
-      <TaskItem key={index} task={task} removeTask={removeTask} />
+      <TaskItem key={task.id} task={task} removeTask={removeTask} updateTask={updateTask} />
     )
   })
 
@@ -32,7 +30,7 @@ const Tasks = ({ project, handleChange, handleSubmit, tasks, task, removeTask })
                       <a href="/">
                         <img src={tasksIcon} alt={"icon"}/>
                       </a>
-                    </i>Project title: {project.title}</h5>
+                    </i>Project title: {project.data.attributes.title}</h5>
                 </div>
                 <div className="card-body table-scroll">
                   <table className="table mb-0">
@@ -57,8 +55,8 @@ const Tasks = ({ project, handleChange, handleSubmit, tasks, task, removeTask })
         </div>
       </section>
       <ModalTaskForm
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
+        onChangeTask={onChangeTask}
+        createTask={createTask}
         task={task}
         show={show}
         handleShow={handleShow}

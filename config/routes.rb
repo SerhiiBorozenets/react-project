@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :projects, param: :slug
-      resources :tasks, only: [:create, :destroy]
+      resources :tasks, only: [:create, :destroy, :update]
     end
   end
 

@@ -9,10 +9,10 @@ const Project = () => {
   const params = useParams();
   const [task, setTask] = useState({})
 
-  const handleChange = (e) => {
+  const onChangeTask = (e) => {
     setTask(Object.assign({}, task, {[e.target.name]: e.target.value}))
   }
-  const handleSubmit = async () => {
+  const createTask = async () => {
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
@@ -21,7 +21,7 @@ const Project = () => {
       .then(resp => {
         const included = [...project.included, resp.data.data]
         setProject({...project, included})
-        setTask({title: '', deadline: '', status: '', completed: false})
+        setTask({title: '', due_date: '', status: '', completed: false})
       })
       .catch(resp => {console.log(resp)})
   }
@@ -36,6 +36,19 @@ const Project = () => {
         setProject({...project, included})
     })
     .catch(resp => {console.log(resp)})
+  }
+
+  const updateTask = async (task) => {
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    await axios.patch(`/api/v1/tasks/${task.id}`, {task})
+      .then(resp => {
+        const filteredTask = project.included.filter(item => item.id !== String(task.id))
+        const included = [...filteredTask, resp.data.data]
+        setProject({...project, included})
+      })
+      .catch(resp => {console.log(resp)})
   }
 
   useEffect(()=> {
@@ -53,11 +66,12 @@ const Project = () => {
       { loaded &&
         <>
           <Tasks project={project}
-                 handleChange={handleChange}
-                 handleSubmit={handleSubmit}
+                 createTask={createTask}
                  removeTask={removeTask}
                  tasks={project.included}
                  task={task}
+                 updateTask={updateTask}
+                 onChangeTask={onChangeTask}
           />
         </>
       }

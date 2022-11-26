@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_121955) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "slug"
+    t.string "slug", null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_121955) do
     t.string "title"
     t.boolean "completed", default: false
     t.integer "status"
-    t.date "deadline"
+    t.date "due_date"
     t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
