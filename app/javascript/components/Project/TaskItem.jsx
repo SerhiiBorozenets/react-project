@@ -4,6 +4,8 @@ import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import {sweetAlertRemove} from "../SweetAlert/alertHelpers";
 import ModalEditTaskForm from "../Modals/ModalEditTaskForm";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css'; // optional
 
 const TaskItem = ({ task, removeTask, updateTask }) => {
   const badgeMap = {
@@ -17,6 +19,11 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
 
+  const handleClick = (e) => {
+    Object.assign(editTask, {completed: e.target.checked});
+    updateTask(editTask);
+  };
+
   const removeTaskConfirm = () => {
     sweetAlertRemove(task.attributes, removeTask)
   }
@@ -25,10 +32,23 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
     setEditTask(Object.assign({}, editTask, {[e.target.name]: e.target.value}))
   }
 
+  const RenderCheckbox = () => (
+    <div className={`form-check`}>
+      <Tippy content={` ${editTask.completed ?  'Mark as uncompleted' : 'Mark as completed'}`}>
+        <input className="form-check-input checkbox-inline" type="checkbox" data-toggle='tooltip' data-placement='right' data-original-title="tooltip here"
+               onChange={e => handleClick(e)} checked={editTask.completed}
+               id={`default-${editTask.id}`} />
+      </Tippy>
+      <label className={`form-check-label ${editTask.completed ?  'completed-task' : ''}`}>
+        {title}
+      </label>
+    </div>
+  );
+
   return(
-    <tr className="fw-normal">
+    <tr className={`fw-normal ${editTask.completed ?  'completed-task' : ''}`}>
       <td className="align-middle">
-        <span> {title}</span>
+        <RenderCheckbox />
       </td>
       <td className="align-middle">
         <span>{dueDateFormat}</span>

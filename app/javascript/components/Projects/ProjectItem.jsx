@@ -3,6 +3,8 @@ import {Link} from "react-router-dom";
 import {PencilSquare, Trash} from "react-bootstrap-icons";
 import moment from "moment";
 import {sweetAlertRemove} from "../SweetAlert/alertHelpers";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const ProjectItem = ({ project, removeProject }) => {
   const dueDateFormat = project.due_date ? moment(project.due_date).format('DD.MM.YYYY') : ""
@@ -19,7 +21,9 @@ const ProjectItem = ({ project, removeProject }) => {
         </Link>
       </td>
       <td className="align-middle">
-        <span style={{paddingLeft: "40px"}}> {project.tasks_count}</span>
+        <div style={{ width: 50, height: 50 }}>
+          <CircularProgressbar value={project.progress} text={`${project.progress}%`} />
+        </div>
       </td>
       <td className="align-middle">
         <span>{dueDateFormat}</span>

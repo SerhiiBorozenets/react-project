@@ -10,3 +10,14 @@
 .back-ground-header {
   background-color: #eee;
 }
+
+.completed-task {
+  background-color: #eee;
+  text-decoration: line-through;
+}
+.CircularProgressbar-text {
+  fill: #3e98c7;
+  font-size: 30px !important;
+  dominant-baseline: middle;
+  text-anchor: middle;
+}

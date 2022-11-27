@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
@@ -24,7 +24,7 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, updateTas
   }, [editTask.title])
 
   return <Modal show={show} onHide={handleShow} animation={false}>
-    <Modal.Header className="back-ground-header">
+    <Modal.Header closeButton className="back-ground-header">
       <Modal.Title>Edit task</Modal.Title>
     </Modal.Header>
     <Modal.Body>
@@ -33,6 +33,8 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, updateTas
           <Form.Label>Task title</Form.Label>
           <Form.Control
             type="text"
+            as="textarea"
+            rows="3"
             name="title"
             placeholder="Enter task title"
             value={editTask.title}

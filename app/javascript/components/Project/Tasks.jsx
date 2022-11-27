@@ -3,6 +3,7 @@ import TaskItem from "./TaskItem";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import {Button} from "react-bootstrap";
 import ModalTaskForm from "../Modals/ModalTaskForm";
+import {sortTask} from "../helpers/helpers";
 
 const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, updateTask }) => {
   const [show, setShow] = useState(false);
@@ -11,9 +12,9 @@ const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, upd
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
-  const taskItem = tasks.map((task) => {
+  const taskItem = sortTask(tasks).map((task) => {
     return (
-      <TaskItem key={task.id} task={task} removeTask={removeTask} updateTask={updateTask} />
+      <TaskItem key={task.attributes.id} task={task} removeTask={removeTask} updateTask={updateTask} />
     )
   })
 
@@ -27,10 +28,10 @@ const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, upd
                 <div className="card-header p-3">
                   <h5 className="mb-0">
                     <i className="me-2 text-dark">
-                      <a href="/">
-                        <img src={tasksIcon} alt={"icon"}/>
-                      </a>
-                    </i>Project title: {project.data.attributes.title}</h5>
+                      <a href="/"><img src={tasksIcon} alt={"icon"}/></a>
+                    </i>
+                    Project title: {project.data.attributes.title}
+                  </h5>
                 </div>
                 <div className="card-body table-scroll">
                   <table className="table mb-0">

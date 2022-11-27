@@ -24,14 +24,14 @@ const ModalTaskForm = ({ handleShow, createTask, task, show, onChangeTask }) => 
   }, [task.title])
 
   return <Modal show={show} onHide={handleShow} animation={false}>
-    <Modal.Header className="back-ground-header">
+    <Modal.Header closeButton className="back-ground-header">
       <Modal.Title>Create new task</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <Form>
         <Form.Group className="mb-3" onChange={onChangeTask} value={task.title}>
           <Form.Label>Task title</Form.Label>
-          <Form.Control type="text" name="title" placeholder="Enter task title" autoFocus />
+          <Form.Control type="text" as="textarea" rows="3" name="title" placeholder="Enter task title" autoFocus />
         </Form.Group>
 
         <Form.Group className="mb-3">

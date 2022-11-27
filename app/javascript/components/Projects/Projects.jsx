@@ -6,6 +6,7 @@ import {Button} from "react-bootstrap";
 import ModalProjectForm from "../Modals/ModalProjectForm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
+import {createCsrfToken} from "../helpers/helpers";
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
@@ -24,9 +25,7 @@ const Projects = () => {
   }, [projects.length])
 
   const createProject = async () => {
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
-
+    createCsrfToken()
     await axios.post('/api/v1/projects', project)
       .then(resp => {
         setProjects(projects => [...projects, resp.data.data]);
@@ -35,9 +34,7 @@ const Projects = () => {
   }
 
   const removeProject = async (slug) => {
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
-
+    createCsrfToken()
     await axios.delete(`/api/v1/projects/${slug}`)
       .then( () => {
         const newProjects = projects.filter(item => item.attributes.slug !== String(slug))
@@ -46,7 +43,7 @@ const Projects = () => {
       .catch(resp => {console.log(resp)})
   }
 
-  const TITLES = ['Project name', 'Tasks Count', 'Due date', 'Actions'];
+  const TITLES = ['Project name', 'Progress', 'Due date', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })

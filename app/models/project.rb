@@ -27,7 +27,15 @@ class Project < ApplicationRecord
     tasks.length
   end
 
+  def progress
+    return "0" if tasks.length == 0
+
+    task_completed = tasks.select {|task| task.completed }.count
+    tasks.length
+    (task_completed * 100) / tasks.length
+  end
+
   def due_date
-    tasks&.order(due_date: :desc)&.first&.due_date
+    tasks.map(&:due_date).compact.max
   end
 end

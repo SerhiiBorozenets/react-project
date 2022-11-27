@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
 import Tasks from "./Tasks";
+import {createCsrfToken} from "../helpers/helpers";
 
 const Project = () => {
   const [project, setProject] = useState({})
@@ -13,9 +14,7 @@ const Project = () => {
     setTask(Object.assign({}, task, {[e.target.name]: e.target.value}))
   }
   const createTask = async () => {
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
-
+    createCsrfToken()
     const project_id = project.data.id
     await axios.post('/api/v1/tasks', {task, project_id})
       .then(resp => {
@@ -27,9 +26,7 @@ const Project = () => {
   }
 
   const removeTask = async (id) => {
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
-
+    createCsrfToken()
     await axios.delete(`/api/v1/tasks/${id}`)
       .then(() => {
         const included = [...project.included.filter(item => item.id !== String(id))]
@@ -39,9 +36,7 @@ const Project = () => {
   }
 
   const updateTask = async (task) => {
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
-
+    createCsrfToken()
     await axios.patch(`/api/v1/tasks/${task.id}`, {task})
       .then(resp => {
         const filteredTask = project.included.filter(item => item.id !== String(task.id))
