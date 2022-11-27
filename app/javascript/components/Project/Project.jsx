@@ -20,7 +20,7 @@ const Project = () => {
       .then(resp => {
         const included = [...project.included, resp.data.data]
         setProject({...project, included})
-        setTask({title: '', due_date: '', status: '', completed: false})
+        setTask({title: '', due_date: '', status: '', completed: false, complexity: ''})
       })
       .catch(resp => {console.log(resp)})
   }

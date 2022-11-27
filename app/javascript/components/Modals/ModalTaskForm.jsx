@@ -5,9 +5,13 @@ import Modal from "react-bootstrap/Modal";
 
 const ModalTaskForm = ({ handleShow, createTask, task, show, onChangeTask }) => {
   const [disable, setDisable] = useState(true)
-  const OPTIONS = ['--Choose an option--', 'Low', "Middle", "High"];
-  const statusOptions = OPTIONS.map( (status, index) => {
+  const STATUS_OPTIONS = ['Choose an option', 'Low', "Middle", "High"];
+  const COMPLEXITY_OPTIONS = ['None', 'Elementary', "Intermediate", "Advanced", "Master"];
+  const statusOptions = STATUS_OPTIONS.map( (status, index) => {
     return <option key={index} value={status}>{status}</option>
+  })
+  const complexityOptions = COMPLEXITY_OPTIONS.map( (complexity, index) => {
+    return <option key={index} value={complexity}>{complexity}</option>
   })
 
   const onProjectSave = () => {
@@ -50,6 +54,14 @@ const ModalTaskForm = ({ handleShow, createTask, task, show, onChangeTask }) => 
           <Form.Select onChange={onChangeTask} name="status">
             {statusOptions}
           </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Select complexity</Form.Label>
+          <Form.Select onChange={onChangeTask} defaultValue={task.complexity} name="complexity">
+            {complexityOptions}
+          </Form.Select>
+
         </Form.Group>
       </Form>
     </Modal.Body>

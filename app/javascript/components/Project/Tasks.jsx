@@ -8,7 +8,7 @@ import {sortTask} from "../helpers/helpers";
 const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, updateTask }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
-  const TITLES = ['Task title', 'Due date', 'Status', 'Actions'];
+  const TITLES = ['Tasks', 'Due date', 'Status', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
