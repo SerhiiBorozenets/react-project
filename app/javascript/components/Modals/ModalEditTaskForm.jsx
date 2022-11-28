@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 
 const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, updateTask}) => {
   const [disable, setDisable] = useState(true)
-  const STATUS_OPTIONS = ['Choose an option', 'Low', "Middle", "High"];
+  const STATUS_OPTIONS = ['No', 'Low', "Middle", "High"];
   const COMPLEXITY_OPTIONS = ['None', 'Elementary', "Intermediate", "Advanced", "Master"];
   const statusOptions = STATUS_OPTIONS.map( (status, index) => {
     return <option key={index} value={status}>{status}</option>

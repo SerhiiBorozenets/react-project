@@ -43,14 +43,28 @@ const Projects = () => {
       .catch(resp => {console.log(resp)})
   }
 
+  const updateProject = async (project) => {
+    createCsrfToken()
+    await axios.patch(`/api/v1/projects/${project.slug}`, {project})
+      .then( resp => {
+        const newProjects = projects.filter(item => item.attributes.slug !== String(project.slug))
+        setProjects([...newProjects, resp.data.data]);
+      })
+      .catch(resp => {console.log(resp)})
+  }
+
   const TITLES = ['Project name', 'Progress', 'Due date', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
 
-  const projectItem = projects.map((project, index) => {
+  const projectItem = projects.map((project) => {
     return (
-      <ProjectItem key={index} project={project.attributes} removeProject={removeProject}/>
+      <ProjectItem key={project.id}
+                   project={project}
+                   removeProject={removeProject}
+                   updateProject={updateProject}
+      />
     )
   })
 

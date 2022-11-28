@@ -1,6 +1,5 @@
 class Api::V1::ProjectsController < ApplicationController
   protect_from_forgery with: :null_session
-  # before_action :set_project, only: %i[ show edit update destroy ]
 
   # GET /projects or /projects.json
   def index
@@ -58,17 +57,11 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    # def set_project
-    #   @project = Project.find(params[:id])
-    # end
+  def project_params
+    params.require(:project).permit(:title, :user_id)
+  end
 
-    # Only allow a list of trusted parameters through.
-    def project_params
-      params.require(:project).permit(:title, :user_id)
-    end
-
-    def options
-      @options ||= {include: %i[tasks]}
-    end
+  def options
+    @options ||= {include: %i[tasks]}
+  end
 end

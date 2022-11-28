@@ -10,6 +10,7 @@ import { BsReception0, BsReception1, BsReception2, BsReception3, BsReception4 } 
 
 const TaskItem = ({ task, removeTask, updateTask }) => {
   const badgeStatusMap = {
+    No: 'dark',
     Low: 'success',
     Middle: 'warning',
     High: 'danger'
@@ -31,7 +32,7 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
     setEditTask(Object.assign({}, editTask, {[e.target.name]: e.target.value}))
   }
   const bsReception = () => {
-    switch (editTask.complexity) {
+    switch (complexity) {
       case "None": return <BsReception0 size={25} />
       case "Elementary": return <BsReception1 size={25} />
       case "Intermediate": return <BsReception2 size={25} />
@@ -55,7 +56,7 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
           {title}
         </label>
       </div>
-      <div className="col-sm-2 text-center align-self-center text-primary" id={`bsReception-${editTask.id }`} title={`Complexity: ${editTask.complexity }`}>
+      <div className={`col-sm-2 text-center align-self-center ${editTask.completed ? 'text-secondary' : 'text-info'}`} title={`Complexity: ${complexity }`}>
         {bsReception()}
       </div>
     </div>
@@ -70,14 +71,14 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
         <span>{dueDateFormat}</span>
       </td>
       <td className="align-middle">
-        <h6 className="mb-0"><span className={`badge bg-${badgeStatusMap[status]}`}>{status ? status: 'No'} priority</span></h6>
+        <h6 className="mb-0"><span className={`badge bg-${editTask.completed ? 'secondary' : badgeStatusMap[status]}`}>{status} priority</span></h6>
       </td>
       <td className="align-middle mx-2">
-        <Link to="#"  onClick={removeTaskConfirm} >
-          <Trash className="mx-2" color="red" size={20} />
+        <Link to="#" onClick={removeTaskConfirm} >
+          <Trash className="mx-2" color={`${editTask.completed ? 'grey' : 'red'}`} size={20} />
         </Link>
-        <Link to="#"  onClick={handleShow} >
-          <PencilSquare className="ml-2" color="royalblue" size={20} />
+        <Link to="#" onClick={handleShow} >
+          <PencilSquare className="ml-2" color={`${editTask.completed ? 'grey' : 'royalblue'}`} size={20} />
         </Link>
       </td>
       <ModalEditTaskForm
