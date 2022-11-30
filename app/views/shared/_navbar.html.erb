@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container d-flex">
+    <a> <%= link_to 'PROJECT LIST', root_path, class: "navbar-brand text-white" %> </a>
+    <div class="justify-content-between" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%=  link_to 'Sing out', destroy_user_session_path, method: :delete, class: "nav-link text-white" %>
+          </li>
+        <% else %>
+          <div class="d-flex d-inline-flex">
+            <li class="nav-item">
+              <%= link_to 'Sing up', new_user_registration_path, class: "nav-link text-white" %>
+            </li>
+            &nbsp;&nbsp;&nbsp;
+            <li class="nav-item">
+              <%= link_to 'Login', new_user_session_path, class: "nav-link text-white" %>
+            </li>
+          </div>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

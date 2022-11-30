@@ -1,23 +1,25 @@
 class Api::V1::ProjectsController < ApplicationController
   protect_from_forgery with: :null_session
+  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /projects or /projects.json
   def index
-    projects = Project.all
-
-    render json: ProjectSerializer.new(projects).serialized_json
+    if user_signed_in?
+      render json: ProjectSerializer.new(current_user.projects).serialized_json
+    else
+      render json: {}, status: 401
+    end
   end
 
   # GET /projects/1 or /projects/1.json
   def show
-    project = Project.find_by(slug: params[:slug])
-
-    render json: ProjectSerializer.new(project, options).serialized_json
+    render json: ProjectSerializer.new(@project, options).serialized_json
   end
 
   # GET /projects/new
   def new
-    @project = Project.new
+    @project = current_user.projects.build
   end
 
   # GET /projects/1/edit
@@ -26,37 +28,38 @@ class Api::V1::ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    project = Project.new(project_params)
+    @project = current_user.projects.build(project_params)
 
-    if project.save
-      render json: ProjectSerializer.new(project, options).serialized_json
+    if @project.save
+      render json: ProjectSerializer.new(@project, options).serialized_json
     else
-      render json: {error: project.errors.message }, status: 422
+      render json: {error: @project.errors }, status: 422
     end
   end
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
-    project = Project.find_by(slug: params[:slug])
-
-    if project.update(project_params)
-      render json: ProjectSerializer.new(project, options).serialized_json
+    if @project.update(project_params)
+      render json: ProjectSerializer.new(@project, options).serialized_json
     else
-      render json: {error: project.errors.message }, status: 422
+      render json: {error: @project.errors }, status: 422
     end
   end
 
   # DELETE /projects/1 or /projects/1.json
   def destroy
-    project = Project.find_by(slug: params[:slug])
-    if project.destroy
+    if @project.destroy
       head :no_content, notice: "Project was successfully destroyed."
     else
-      render json: {error: project.errors.message }, status: 422
+      render json: {error: @project.errors }, status: 422
     end
   end
 
   private
+
+  def set_project
+    @project = Project.find_by(slug: params[:slug])
+  end
   def project_params
     params.require(:project).permit(:title, :user_id)
   end

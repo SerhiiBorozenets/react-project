@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
-  # belongs_to :user
+  belongs_to :user
   validates :slug, uniqueness: true
   validates :title, presence: true
   validate :slug_not_changed
@@ -36,6 +36,6 @@ class Project < ApplicationRecord
   end
 
   def due_date
-    tasks.map(&:due_date).compact.max
+    tasks.pluck(:due_date).compact.max
   end
 end

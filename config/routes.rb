@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  root 'pages#index'
-
   namespace :api do
     namespace :v1 do
       resources :projects, param: :slug
@@ -8,5 +6,16 @@ Rails.application.routes.draw do
     end
   end
 
-  get '*path', to: 'pages#index', via: :all
+  devise_for :users
+  devise_scope :user do
+    authenticated :user do
+      get '/', to: 'pages#app'
+      get '/*undefined', to: redirect('/')
+    end
+    unauthenticated do
+      get '*path', to: 'pages#home', via: :all
+    end
+  end
+
+  root 'pages#home'
 end
