@@ -52,6 +52,10 @@ gem "sassc-rails"
 gem 'bootstrap'
 gem "font-awesome-sass"
 gem 'jquery-rails'
+gem "dotenv-rails"
+gem 'omniauth'
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

@@ -6,7 +6,10 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :user, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks'
+  }
+
   devise_scope :user do
     authenticated :user do
       get '/', to: 'pages#app'

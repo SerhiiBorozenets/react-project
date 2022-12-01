@@ -16,7 +16,7 @@
                   Set project due date, complexity and manage your progress.
                 </p>
                 <p class="text-muted mt-4 mb-3">Please log in to continue.</p>
-                <%= link_to 'Login', "/users/sign_in", class: "btn btn-theme" %>
+                <%= link_to 'Login', new_user_session_path, class: "btn btn-theme", method: :get %>
               </div>
             </div>
 
@@ -34,7 +34,9 @@
         <!-- end card-body -->
       </div>
       <!-- end card -->
-      <p class="text-muted text-center mt-3 mb-0">Don't have an account? <a href="/users/sign_up" class="text-primary ml-1">register</a></p>
+      <p class="text-muted text-center mt-3 mb-0">Don't have an account?
+        <%= link_to 'register', new_user_session_path, class: "text-primary ml-1", method: :post %>
+      </p>
       <!-- end row -->
     </div>
     <!-- end col -->
