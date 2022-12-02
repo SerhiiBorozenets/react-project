@@ -4,21 +4,21 @@
     <%- resource_class.omniauth_providers.each do |provider| %>
       <% if provider.to_s == "google_oauth2" %>
         <div>
-          <%= button_to(image_tag('/assets/google-logo.png').html_safe,
+          <%= button_to(image_tag('google-logo.png').html_safe,
                         omniauth_authorize_path(resource_name, provider),
                         method: :post, class: "btn btn-lg btn-logo btn-block text-uppercase btn-outline") %>
         </div>
       <% end %>
       <% if provider.to_s == "github" %>
         <div>
-          <%= button_to(image_tag('/assets/GitHub-Mark-32px.png').html_safe,
+          <%= button_to(image_tag('GitHub-Mark-32px.png').html_safe,
                         omniauth_authorize_path(resource_name, provider),
                         method: :post, class: "btn btn-lg btn-logo btn-block text-uppercase btn-outline") %>
         </div>
       <% end %>
       <% if provider.to_s == "facebook" %>
         <div>
-          <%= button_to(image_tag('/assets/social_facebook_box_blue_256_30649.png').html_safe,
+          <%= button_to(image_tag('social_facebook_box_blue_256_30649.png').html_safe,
                         omniauth_authorize_path(resource_name, provider),
                         method: :post, class: "btn btn-lg btn-logo btn-block text-uppercase btn-outline") %>
         </div>
