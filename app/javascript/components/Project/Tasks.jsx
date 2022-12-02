@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, Fragment} from "react";
 import TaskItem from "./TaskItem";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import {Button} from "react-bootstrap";
@@ -19,7 +19,7 @@ const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, upd
   })
 
   return(
-    <>
+    <Fragment>
       <section className="home-page">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -62,7 +62,7 @@ const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, upd
         show={show}
         handleShow={handleShow}
       />
-    </>
+    </Fragment>
   )
 }
 

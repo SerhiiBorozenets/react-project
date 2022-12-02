@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 import Tasks from "./Tasks";
 import {createCsrfToken} from "../helpers/helpers";
+import { Fragment } from 'react';
 
 const Project = () => {
   const [project, setProject] = useState({})
@@ -57,9 +58,9 @@ const Project = () => {
   }, [])
 
   return(
-    <>
+    <Fragment>
       { loaded &&
-        <>
+        <Fragment>
           <Tasks project={project}
                  createTask={createTask}
                  removeTask={removeTask}
@@ -68,9 +69,9 @@ const Project = () => {
                  updateTask={updateTask}
                  onChangeTask={onChangeTask}
           />
-        </>
+        </Fragment>
       }
-    </>
+    </Fragment>
   )
 }
 
