@@ -35,15 +35,11 @@
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
-    "webpack": "^5.75.0",
     "webpack-dev-server": "^3"
   },
   "engines": {
     "node": "16.17.0",
     "npm": "8.15.0",
     "yarn": "1.22.19"
-  },
-  "scripts": {
-    "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/production.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
   }
 }
