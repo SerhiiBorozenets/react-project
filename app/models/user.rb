@@ -3,7 +3,13 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: %i[google_oauth2 github facebook]
 
-  has_many :projects
+  has_many :projects, dependent: :destroy
+
+  after_create :create_example_project
+
+  def create_example_project
+    Users::CreateExampleProject.new.process(id)
+  end
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
