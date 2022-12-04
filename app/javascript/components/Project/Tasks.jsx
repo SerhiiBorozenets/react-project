@@ -1,22 +1,19 @@
 import React, {useState, Fragment} from "react";
-import TaskItem from "./TaskItem";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import {Button} from "react-bootstrap";
 import ModalTaskForm from "../Modals/ModalTaskForm";
-import {sortTask} from "../helpers/helpers";
+import TasksTableHead from "./TasksTableHead";
+import TasksTableBody from "./TasksTableBody";
 
-const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, updateTask }) => {
+const Tasks = ({ project, onChangeTask, createTask, task, tasks, removeTask, updateTask, setProject }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
-  const TITLES = ['Tasks', 'Due date', 'Status', 'Actions'];
-  const titles = TITLES.map( (title, index) => {
-    return <th scope="col" key={index}>{title}</th>
-  })
-  const taskItem = sortTask(tasks).map((task) => {
-    return (
-      <TaskItem key={task.attributes.id} task={task} removeTask={removeTask} updateTask={updateTask} />
-    )
-  })
+  const columns = [
+    { label: "Tasks", accessor: "title", sortable: true },
+    { label: "Due date", accessor: "due_date", sortable: true },
+    { label: "Status", accessor: "status", sortable: true },
+    { label: "Actions", accessor: "actions", sortable: false }
+  ];
 
   return(
     <Fragment>
@@ -35,14 +32,8 @@ const Tasks = ({ project, onChangeTask, createTask, tasks, task, removeTask, upd
                 </div>
                 <div className="card-body table-scroll">
                   <table className="table mb-0">
-                    <thead>
-                      <tr>
-                        {titles}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {taskItem}
-                    </tbody>
+                    <TasksTableHead {...{ columns, project, setProject }} />
+                    <TasksTableBody {...{ tasks, removeTask, updateTask }} />
                   </table>
                 </div>
                 <div className="card-footer text-end p-3">

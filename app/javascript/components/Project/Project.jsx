@@ -62,6 +62,7 @@ const Project = () => {
       { loaded &&
         <Fragment>
           <Tasks project={project}
+                 setProject={setProject}
                  createTask={createTask}
                  removeTask={removeTask}
                  tasks={project.included}

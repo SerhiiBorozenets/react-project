@@ -67,7 +67,7 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
       <td className="align-middle">
         <RenderTaskBody />
       </td>
-      <td className="align-middle">
+      <td className="align-middle" style={{minWidth: 100}}>
         <span>{dueDateFormat}</span>
       </td>
       <td className="align-middle">
