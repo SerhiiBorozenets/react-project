@@ -2,23 +2,24 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {PencilSquare, Trash} from "react-bootstrap-icons";
 import moment from "moment";
-import {sweetAlertRemove} from "../SweetAlert/alertHelpers";
+import {sweetAlertRemoveProject} from "../SweetAlert/alertHelpers";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ModalEditProjectForm from "../Modals/ModalEditProjectForm";
+import {removeProject} from "../helpers/helpers";
 
-const ProjectItem = ({ project, removeProject, updateProject }) => {
+const ProjectItem = ({ project, projects, setProjects }) => {
   const {due_date, slug, title, progress} = project.attributes
   const dueDateFormat = due_date ? moment(due_date).format('DD.MM.YYYY') : ""
   const [editProject, setEditProject] = useState(project.attributes)
   const [showEdit, setShowEdit] = useState(false);
+
   const handleShowEdit = () => setShowEdit(p => !p);
   const onChangeEditProject = (e) => {
     setEditProject(Object.assign({}, editProject, {[e.target.name]: e.target.value}))
   }
-
   const removeProjectConfirm = () => {
-    sweetAlertRemove(project.attributes, removeProject)
+    sweetAlertRemoveProject({project, projects, setProjects}, removeProject)
   }
 
   return<tr className="fw-normal">
@@ -39,12 +40,13 @@ const ProjectItem = ({ project, removeProject, updateProject }) => {
       <Link to="#" onClick={removeProjectConfirm} >
         <Trash className="mx-2" color="red" size={20} />
       </Link>
-      <Link onClick={handleShowEdit}>
+      <Link to="#" onClick={handleShowEdit}>
         <PencilSquare className="ml-2" color="royalblue" size={20} />
       </Link>
       <ModalEditProjectForm
         editProject={editProject}
-        updateProject={updateProject}
+        projects={projects}
+        setProjects={setProjects}
         onChangeEditProject={onChangeEditProject}
         showEdit={showEdit}
         handleShowEdit={handleShowEdit}

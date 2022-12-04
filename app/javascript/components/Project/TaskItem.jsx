@@ -2,13 +2,14 @@ import React, {useState} from "react";
 import {PencilSquare, Trash} from 'react-bootstrap-icons';
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
-import {sweetAlertRemove} from "../SweetAlert/alertHelpers";
+import {sweetAlertRemoveTask} from "../SweetAlert/alertHelpers";
 import ModalEditTaskForm from "../Modals/ModalEditTaskForm";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { BsReception0, BsReception1, BsReception2, BsReception3, BsReception4 } from "react-icons/bs";
+import {removeTask, updateTask} from "../helpers/helpers";
 
-const TaskItem = ({ task, removeTask, updateTask }) => {
+const TaskItem = ({ task, project, setProject }) => {
   const badgeStatusMap = {
     No: 'dark',
     Low: 'success',
@@ -22,11 +23,11 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
   const handleShow = () => setShow(p => !p);
 
   const handleClick = (e) => {
-    Object.assign(editTask, {completed: e.target.checked});
-    updateTask(editTask);
+    setEditTask(Object.assign(editTask, {completed: e.target.checked}));
+    return updateTask(editTask, project, setProject);
   };
   const removeTaskConfirm = () => {
-    sweetAlertRemove(task.attributes, removeTask)
+    sweetAlertRemoveTask({task, project, setProject}, removeTask)
   }
   const onChangeEditTask = (e) => {
     setEditTask(Object.assign({}, editTask, {[e.target.name]: e.target.value}))
@@ -83,7 +84,8 @@ const TaskItem = ({ task, removeTask, updateTask }) => {
       </td>
       <ModalEditTaskForm
         onChangeEditTask={onChangeEditTask}
-        updateTask={updateTask}
+        project={project}
+        setProject={setProject}
         editTask={editTask}
         show={show}
         handleShow={handleShow}

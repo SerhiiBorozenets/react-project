@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
+import {updateTask} from "../helpers/helpers";
 
-const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, updateTask}) => {
+const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, setProject}) => {
   const [disable, setDisable] = useState(true)
   const STATUS_OPTIONS = ['No', 'Low', "Middle", "High"];
   const COMPLEXITY_OPTIONS = ['None', 'Elementary', "Intermediate", "Advanced", "Master"];
@@ -15,8 +16,7 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, updateTas
   })
 
   const onHandleSave = () => {
-    handleShow()
-    updateTask(editTask)
+    updateTask(editTask, project, setProject).then(handleShow())
   }
 
   useEffect(()=> {

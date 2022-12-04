@@ -24,3 +24,65 @@ export const handleSorting = (sortField, sortOrder, project, setProject) => {
     return setProject({...project, included})
   }
 };
+
+export const updateTask = async (task, project, setProject) => {
+  createCsrfToken()
+  await axios.patch(`/api/v1/tasks/${task.id}`, {task})
+    .then(resp => {
+      const filteredTask = project.included.filter(item => item.id !== String(task.id))
+      const included = [...filteredTask, resp.data.data]
+      setProject({...project, included})
+    })
+    .catch(resp => {console.log(resp)})
+}
+
+export const removeTask = async (id, project, setProject) => {
+  createCsrfToken()
+  await axios.delete(`/api/v1/tasks/${id}`)
+    .then(() => {
+      const included = [...project.included.filter(item => item.id !== String(id))]
+      setProject({...project, included})
+    })
+    .catch(resp => {console.log(resp)})
+}
+
+export const removeProject = async (slug, projects, setProjects) => {
+  createCsrfToken()
+  await axios.delete(`/api/v1/projects/${slug}`)
+    .then( () => {
+      const newProjects = projects.filter(item => item.attributes.slug !== String(slug))
+      setProjects( [...newProjects]);
+    })
+    .catch(resp => {console.log(resp)})
+}
+
+export const updateProject = async (project, projects, setProjects) => {
+  createCsrfToken()
+  await axios.patch(`/api/v1/projects/${project.slug}`, {project})
+    .then( resp => {
+      const newProjects = projects.filter(item => item.attributes.slug !== String(project.slug))
+      setProjects([...newProjects, resp.data.data]);
+    })
+    .catch(resp => {console.log(resp)})
+}
+
+export const createProject = async (project, projects, setProjects) => {
+  createCsrfToken()
+  await axios.post('/api/v1/projects', project)
+    .then(resp => {
+      setProjects(projects => [...projects, resp.data.data]);
+    })
+    .catch(resp => {console.log(resp)})
+}
+
+export const createTask = async (project, setProject, task, setTask) => {
+  createCsrfToken()
+  const project_id = project.data.id
+  await axios.post('/api/v1/tasks', {task, project_id})
+    .then(resp => {
+      const included = [...project.included, resp.data.data]
+      setProject({...project, included})
+      setTask({title: '', due_date: '', status: '', completed: false, complexity: ''})
+    })
+    .catch(resp => {console.log(resp)})
+}

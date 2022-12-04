@@ -5,7 +5,7 @@ import ModalTaskForm from "../Modals/ModalTaskForm";
 import TasksTableHead from "./TasksTableHead";
 import TasksTableBody from "./TasksTableBody";
 
-const Tasks = ({ project, onChangeTask, createTask, task, tasks, removeTask, updateTask, setProject }) => {
+const Tasks = ({ project, setProject, onChangeTask, task, setTask, tasks }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
   const columns = [
@@ -33,7 +33,7 @@ const Tasks = ({ project, onChangeTask, createTask, task, tasks, removeTask, upd
                 <div className="card-body table-scroll">
                   <table className="table mb-0">
                     <TasksTableHead {...{ columns, project, setProject }} />
-                    <TasksTableBody {...{ tasks, removeTask, updateTask }} />
+                    <TasksTableBody {...{ tasks, project, setProject }} />
                   </table>
                 </div>
                 <div className="card-footer text-end p-3">
@@ -48,8 +48,10 @@ const Tasks = ({ project, onChangeTask, createTask, task, tasks, removeTask, upd
       </section>
       <ModalTaskForm
         onChangeTask={onChangeTask}
-        createTask={createTask}
         task={task}
+        setTask={setTask}
+        project={project}
+        setProject={setProject}
         show={show}
         handleShow={handleShow}
       />

@@ -14,38 +14,6 @@ const Project = () => {
   const onChangeTask = (e) => {
     setTask(Object.assign({}, task, {[e.target.name]: e.target.value}))
   }
-  const createTask = async () => {
-    createCsrfToken()
-    const project_id = project.data.id
-    await axios.post('/api/v1/tasks', {task, project_id})
-      .then(resp => {
-        const included = [...project.included, resp.data.data]
-        setProject({...project, included})
-        setTask({title: '', due_date: '', status: '', completed: false, complexity: ''})
-      })
-      .catch(resp => {console.log(resp)})
-  }
-
-  const removeTask = async (id) => {
-    createCsrfToken()
-    await axios.delete(`/api/v1/tasks/${id}`)
-      .then(() => {
-        const included = [...project.included.filter(item => item.id !== String(id))]
-        setProject({...project, included})
-    })
-    .catch(resp => {console.log(resp)})
-  }
-
-  const updateTask = async (task) => {
-    createCsrfToken()
-    await axios.patch(`/api/v1/tasks/${task.id}`, {task})
-      .then(resp => {
-        const filteredTask = project.included.filter(item => item.id !== String(task.id))
-        const included = [...filteredTask, resp.data.data]
-        setProject({...project, included})
-      })
-      .catch(resp => {console.log(resp)})
-  }
 
   useEffect(()=> {
     const url = `/api/v1/projects/${params.slug}`
@@ -63,11 +31,9 @@ const Project = () => {
         <Fragment>
           <Tasks project={project}
                  setProject={setProject}
-                 createTask={createTask}
-                 removeTask={removeTask}
                  tasks={project.included}
                  task={task}
-                 updateTask={updateTask}
+                 setTask={setTask}
                  onChangeTask={onChangeTask}
           />
         </Fragment>

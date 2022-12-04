@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
+import {createProject} from "../helpers/helpers";
 
-const ModalProjectForm = ({ createProject, onChangeProject, handleShow, project, show }) => {
+const ModalProjectForm = ({ projects, setProjects, onChangeProject, handleShow, project, show }) => {
   const [disable, setDisable] = useState(true)
 
   const onClickSave = () => {
-    handleShow()
-    createProject()
+    createProject(project, projects, setProjects).then(handleShow())
   }
 
   useEffect(()=> {
