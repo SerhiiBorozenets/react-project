@@ -86,3 +86,11 @@ export const createTask = async (project, setProject, task, setTask) => {
     })
     .catch(resp => {console.log(resp)})
 }
+
+export const searchFunc = (obj, query) => {
+  return obj.filter((item) => {
+    return (
+      item.attributes.title.toLowerCase().includes(query.toLowerCase())
+    );
+  });
+}
