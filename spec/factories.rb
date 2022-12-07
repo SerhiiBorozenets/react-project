@@ -6,6 +6,7 @@ FactoryBot.define do
 
   factory(:project) do
     title { Faker::Hobby.activity }
+    user
   end
 
   factory(:task) do
@@ -14,5 +15,6 @@ FactoryBot.define do
     status { %w[No Low Middle High].sample }
     complexity { %w[None Elementary Intermediate Advanced Master].sample }
     completed { Faker::Boolean.boolean }
+    project
   end
 end

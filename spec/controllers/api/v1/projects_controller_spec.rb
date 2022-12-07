@@ -2,13 +2,18 @@ require 'rails_helper'
 require 'shared_contexts'
 
 RSpec.describe Api::V1::ProjectsController, :type => :controller do
-  let!(:user) { create :user }
-  let!(:project) { attributes_for :project, user_id: user.id }
+  let!(:project_attr) { attributes_for :project, user_id: user.id }
+  let!(:project) {create :project }
+  let(:user) { project.user }
 
-  subject { post :create, params: { project: project, format: :json } }
+  subject { post :create, params: { project: project_attr, format: :json } }
 
   before(:each) do
     sign_in(user)
+  end
+
+  it ':project factory works' do
+    expect(project).to be_valid
   end
 
   describe "GET index" do
@@ -28,8 +33,7 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
   describe "POST" do
     it "creates a Project with data" do
       subject
-
-      project_saved = Project.find_by(title: project[:title])
+      project_saved = Project.find_by(title: project_attr[:title])
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
                                                      {
@@ -39,7 +43,7 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
                                                          {
                                                            "id" => project_saved.id,
                                                            "title" => project_saved.title,
-                                                           "user_id" => user.id,
+                                                           "user_id" => project_saved.user.id,
                                                            "slug" => project_saved.slug,
                                                            "tasks_count" => project_saved.tasks.length,
                                                            "due_date"=> project_saved.due_date,
@@ -60,7 +64,6 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
 
   describe "PATCH" do
     it "updates a Project and returns data" do
-      project = Project.create(title: Faker::Hobby.activity, user_id: user.id)
       patch :update, params: { project: { title: "New title", user_id: user.id }, format: :json, slug: project.slug }
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
@@ -92,7 +95,6 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
 
   describe "DELETE" do
     it "removes project" do
-      project = Project.create(title: Faker::Hobby.activity, user_id: user.id)
       expect { delete :destroy, params: { slug: project.slug } }.to change(Project, :count).by(-1)
     end
   end

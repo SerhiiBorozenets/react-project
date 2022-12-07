@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   has_many :projects, dependent: :destroy
   validates :email, presence: true
-  validates :password, presence: true, length: { minimum: 6, maximum: 128 }
+  validates :password, presence: true
   validates_format_of :email, with: URI::MailTo::EMAIL_REGEXP
 
   after_create :create_example_project

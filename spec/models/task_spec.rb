@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Task, :type => :model do
-  let!(:user) { create :user }
-  let!(:project) { create :project, user_id: user.id }
-  let!(:task) { create :task, project_id: project.id }
+  let!(:task) { create :task }
+  let(:project) { task.project }
+  let(:user) { project.user }
 
   context 'Relationships' do
     it { expect(subject).to belong_to(:project) }
@@ -11,7 +11,7 @@ RSpec.describe Task, :type => :model do
 
   context 'Validation' do
     it "is not valid without a title" do
-      task = Task.new(title: nil)
+      task.title = nil
       expect(task).to_not be_valid
       expect(task.errors[:title].join('')).to eq "can't be blank"
     end
@@ -21,13 +21,14 @@ RSpec.describe Task, :type => :model do
     end
 
     it "is set defaults status and complexity" do
-      task = Task.new(title: Faker::Hobby.activity, project_id: project.id)
-      expect(task.complexity).to eq "None"
-      expect(task.status).to eq "No"
+      task_new = Task.new(title: Faker::Hobby.activity, project_id: project.id)
+      expect(task_new.complexity).to eq "None"
+      expect(task_new.status).to eq "No"
     end
 
     it "is set custom's status and complexity" do
-      task = Task.new(title: Faker::Hobby.activity, project_id: project.id, complexity: "Advanced", status: "Low")
+      task.complexity = "Advanced"
+      task.status = "Low"
       expect(task.complexity).to eq "Advanced"
       expect(task.status).to eq "Low"
     end

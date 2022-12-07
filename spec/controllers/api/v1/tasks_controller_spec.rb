@@ -2,15 +2,23 @@ require 'rails_helper'
 require 'shared_contexts'
 
 RSpec.describe Api::V1::TasksController, :type => :controller do
-  let!(:user) { create :user }
-  let!(:project) { create :project, user_id: user.id }
+  let!(:project) {create :project }
+  let(:user) { project.user }
   let!(:task) { attributes_for :task, project_id: project.id }
-  let!(:task_2) { create :task, project_id: project.id }
+  let!(:task2) { create :task, project_id: project.id }
 
   subject { post :create, :params => { task: task, project_id: project.id, format: :json } }
 
   before(:each) do
     sign_in(user)
+  end
+
+  it ':project factory works' do
+    expect(project).to be_valid
+  end
+
+  it ':task factory works' do
+    expect(task2).to be_valid
   end
 
   describe "responds to" do
@@ -56,28 +64,28 @@ RSpec.describe Api::V1::TasksController, :type => :controller do
 
   describe "PATCH" do
     it "updates a Task and returns data" do
-      post :update, :params => { task: { title: "New task title", completed: !task_2.completed, project_id: project.id }, id: task_2.id, format: :json }
+      post :update, :params => { task: { title: "New task title", completed: !task2.completed, project_id: project.id }, id: task2.id, format: :json }
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
                                                      {
-                                                       "id" => task_2.id.to_s,
+                                                       "id" => task2.id.to_s,
                                                        "type" => "task",
                                                        "attributes" =>
                                                          {
-                                                           "id" => task_2.id,
+                                                           "id" => task2.id,
                                                            "title" => "New task title",
-                                                           "status" => task_2.status,
-                                                           "completed" => !task_2.completed,
-                                                           "due_date" => task_2.due_date.strftime('%Y-%m-%d'),
-                                                           "project_id"=> task_2.project_id,
-                                                           "complexity"=> task_2.complexity
+                                                           "status" => task2.status,
+                                                           "completed" => !task2.completed,
+                                                           "due_date" => task2.due_date.strftime('%Y-%m-%d'),
+                                                           "project_id"=> task2.project_id,
+                                                           "complexity"=> task2.complexity
                                                          },
                                                        "relationships" =>
                                                          {
                                                            "project" =>
                                                              {
                                                                "data" => {
-                                                                 "id" => task_2.project_id.to_s,
+                                                                 "id" => task2.project_id.to_s,
                                                                  "type" => "project"
                                                                }
                                                              }
@@ -89,7 +97,7 @@ RSpec.describe Api::V1::TasksController, :type => :controller do
 
   describe "DELETE" do
     it "removes task" do
-      expect { delete :destroy, params: { id: task_2.id } }.to change(Task, :count).by(-1)
+      expect { delete :destroy, params: { id: task2.id } }.to change(Task, :count).by(-1)
     end
   end
 end

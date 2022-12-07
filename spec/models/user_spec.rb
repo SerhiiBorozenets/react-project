@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, :type => :model do
   let!(:user) { create :user }
-  let!(:user_2) { create :user }
 
   context 'Relationships' do
     it { expect(subject).to have_many(:projects).dependent(:destroy) }
@@ -14,7 +13,7 @@ RSpec.describe User, :type => :model do
 
     it 'fails from 1 to 5 characters' do
       user.password = Faker::Internet.password(min_length: 1, max_length: 5)
-      expect(user.valid?).to be_falsey
+      expect(user).to_not be_valid
     end
     it 'passes more then 6 characters' do
       user.password = Faker::Internet.password(min_length: 6, max_length: 128)
