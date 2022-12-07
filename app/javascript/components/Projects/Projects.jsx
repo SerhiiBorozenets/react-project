@@ -6,6 +6,8 @@ import {Button} from "react-bootstrap";
 import ModalProjectForm from "../Modals/ModalProjectForm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
+import {searchFunc} from "../helpers/helpers";
+import SearchFilter from "../Project/SearchFilter";
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
@@ -27,8 +29,13 @@ const Projects = () => {
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
+  const [query, setQuery] = useState("");
+  const handleFilter = (e) => {
+    e.preventDefault()
+    setQuery(e.target.value)
+  }
 
-  const projectItem = projects.map((project) => {
+  const projectItem = searchFunc(projects, query).map((project) => {
     return (
       <ProjectItem key={project.id}
                    project={project}
@@ -44,8 +51,9 @@ const Projects = () => {
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-12 col-xl-10">
             <div className="card">
-              <div className="card-header p-3">
-                <h5 className="mb-0"><i className="me-2 text-dark"><img src={tasksIcon} alt={"icon"}/></i>Projects list</h5>
+              <div className="card-header p-3 d-flex justify-content-between">
+                <h5 className="mb-0 d-flex align-items-center"><i className="me-2 text-dark"><img src={tasksIcon} alt={"icon"}/></i>Projects list</h5>
+                <SearchFilter query={query} handleFilter={handleFilter} searchType={"project"} hidden={projects.length < 6} />
               </div>
               <div className="card-body table-scroll">
                 <table className="table mb-0">
