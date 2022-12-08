@@ -57,9 +57,6 @@ const TaskItem = ({ task, project, setProject }) => {
           {title}
         </label>
       </div>
-      <div className={`col-sm-2 text-center align-self-center ${editTask.completed ? 'text-secondary' : 'text-info'}`} title={`Complexity: ${complexity }`}>
-        {bsReception()}
-      </div>
     </div>
   };
 
@@ -67,6 +64,11 @@ const TaskItem = ({ task, project, setProject }) => {
     <tr className={`fw-normal ${editTask.completed ?  'completed-task text-muted' : ''}`}>
       <td className="align-middle">
         <RenderTaskBody />
+      </td>
+      <td className="align-middle">
+        <div className={`col-sm-2 complexity align-self-center ${editTask.completed ? 'text-secondary' : 'text-info'}`} title={`Complexity: ${complexity }`}>
+          {bsReception()}
+        </div>
       </td>
       <td className="align-middle" style={{minWidth: 100}}>
         <span>{dueDateFormat}</span>

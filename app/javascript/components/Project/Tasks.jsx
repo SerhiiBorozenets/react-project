@@ -11,6 +11,7 @@ const Tasks = ({ project, setProject, onChangeTask, task, setTask, tasks }) => {
   const handleShow = () => setShow(p => !p);
   const columns = [
     { label: "Tasks", accessor: "title", sortable: true },
+    { label: "Complexity", accessor: "complexity", sortable: true },
     { label: "Due date", accessor: "due_date", sortable: true },
     { label: "Status", accessor: "status", sortable: true },
     { label: "Actions", accessor: "actions", sortable: false }
