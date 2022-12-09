@@ -40,6 +40,4 @@ yarn-debug.log*
 /.env
 /.DS_Store
 .idea/
-/.idea/
-/log/
-/storage/
+.idea*
