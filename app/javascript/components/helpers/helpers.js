@@ -10,7 +10,18 @@ export const sortTask = (tasks) => {
 }
 
 export const handleSorting = (sortField, sortOrder, project, setProject) => {
-  if (sortField) {
+    if(!sortField) return null
+
+    const ind = {
+      'complexity': ['None', 'Elementary', 'Intermediate', 'Advanced', 'Master'],
+      'status': ['No', 'Low', 'Middle', 'High']
+    }
+    if ( ['complexity', 'status'].includes(sortField) ) {
+      const included = [...project.included].sort((a, b) => {
+        return (ind[sortField].indexOf(a.attributes[sortField]) - ind[sortField].indexOf(b.attributes[sortField])) * (sortOrder === "asc" ? 1 : -1)
+      })
+      return setProject({...project, included})
+    } else {
     const included = [...project.included].sort((a, b) => {
       if (a.attributes[sortField] === null) return 1;
       if (b.attributes[sortField] === null) return -1;

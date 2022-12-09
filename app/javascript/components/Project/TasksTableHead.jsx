@@ -10,7 +10,7 @@ const TasksTableHead = ({columns, project, setProject}) => {
         ? "up"
         : sortField === accessor && order === "desc"
           ? "down"
-          : "default"
+          : "col-head"
       : "";
     return <th scope='col' className={cl} key={accessor} onClick={sortable ? () => handleSortingChange(accessor) : null}>
       {label} {accessor === "actions" ? '' : <FontAwesomeIcon icon={faSort} />}
