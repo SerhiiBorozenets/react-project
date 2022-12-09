@@ -16,11 +16,11 @@
                         method: :post, class: "btn btn-lg btn-logo btn-block text-uppercase btn-outline") %>
         </div>
       <% end %>
-      <% if provider.to_s == "facebook" %>
+      <% if provider.to_s == "azure_activedirectory_v2" %>
         <div>
-          <%= button_to(image_tag('social_facebook_box_blue_256_30649.png').html_safe,
+          <%= button_to(image_tag('icons8-microsoft-24.png').html_safe,
                         omniauth_authorize_path(resource_name, provider),
-                        method: :post, class: "btn btn-lg btn-logo btn-block text-uppercase btn-outline") %>
+                        method: :post, data: {turbo: "false"}, class: "btn btn-lg btn-logo btn-block text-uppercase btn-outline") %>
         </div>
       <% end %>
     <% end %>
