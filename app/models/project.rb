@@ -10,7 +10,7 @@ class Project < ApplicationRecord
   def slugify
     itr = 1
     loop do
-      title_slug = title.parameterize
+      title_slug = title.parameterize == 'new' ? "#{title.parameterize}#{itr}" : title.parameterize
       slug_candidate = itr > 1 ? "#{title_slug}-#{itr}" : title_slug
       break self.slug = slug_candidate unless Project.exists?(slug: slug_candidate)
       itr += 1
