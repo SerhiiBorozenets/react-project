@@ -46,6 +46,10 @@
     "yarn": "1.22.19"
   },
   "scripts": {
-    "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/production.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
+    "dev": "react-scripts start",
+    "start": "serve -s build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
   }
 }
