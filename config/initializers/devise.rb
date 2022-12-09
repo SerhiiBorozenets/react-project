@@ -273,7 +273,10 @@ Devise.setup do |config|
   # up on your models and hooks.
   config.omniauth :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET'], scope: "user,repo,gist"
   config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET']
-  config.omniauth :facebook,  ENV['FACEBOOK_ID'], ENV['FACEBOOK_SECRET'], status: true, cookie: true
+  config.omniauth :azure_activedirectory_v2,
+                  client_id:     ENV['AZURE_CLIENT_ID'],
+                  client_secret: ENV['AZURE_CLIENT_SECRET'],
+                  tenant_id:     ENV['AZURE_TENANT_ID']
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -9,8 +9,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     login_base('GitHub')
   end
 
-  def facebook
-    login_base('Facebook')
+  def azure_activedirectory_v2
+    login_base('Azure')
   end
 
   protected

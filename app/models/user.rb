@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: %i[google_oauth2 github facebook]
+         :omniauthable, omniauth_providers: %i[google_oauth2 github azure_activedirectory_v2]
 
   has_many :projects, dependent: :destroy
 
