@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   def update_resource(resource, params)
-    if resource.provider == 'google_oauth2' || 'github' || 'facebook'
+    if resource.provider == 'google_oauth2' || 'github' || 'azure_activedirectory_v2'
       params.delete('current_password')
       resource.password = params['password']
       resource.update_without_password(params)
