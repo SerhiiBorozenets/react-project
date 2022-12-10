@@ -13,7 +13,6 @@ gem "jbuilder"
 gem "redis", "~> 4.0"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
-
 gem 'fast_jsonapi', '~> 1.1', '>= 1.1.1'
 gem 'webpacker'
 gem 'react-rails'
@@ -28,19 +27,18 @@ gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
 gem 'omniauth-azure-activedirectory-v2'
+gem 'faker'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem 'rspec-rails'
-  gem "factory_bot_rails"
-  gem 'faker'
 end
 
 group :test do
+  gem 'rspec-rails'
+  gem "factory_bot_rails"
   gem 'shoulda-matchers'
 end
 
 group :development do
   gem "web-console"
 end
-
