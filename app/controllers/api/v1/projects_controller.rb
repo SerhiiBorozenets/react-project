@@ -67,7 +67,7 @@ class Api::V1::ProjectsController < ApplicationController
   private
 
   def respond_with_zipped_projects
-    compessed_filestream = Zip::OutputStream.write_buffer do |zos|
+    compressed_filestream = Zip::OutputStream.write_buffer do |zos|
       current_user.projects.each do |project|
         zos.put_next_entry "#{project.title.truncate(20)}.xlsx"
         zos.print render_to_string(
@@ -77,8 +77,8 @@ class Api::V1::ProjectsController < ApplicationController
         )
       end
     end
-    compessed_filestream.rewind
-    send_data compessed_filestream.read, filename: 'projects.zip'
+    compressed_filestream.rewind
+    send_data compressed_filestream.read, filename: 'projects.zip'
   end
 
   def set_project
