@@ -6,7 +6,16 @@ class Api::V1::ProjectsController < ApplicationController
   # GET /projects or /projects.json
   def index
     if user_signed_in?
-      render json: ProjectSerializer.new(current_user.projects).serialized_json
+      respond_to do |format|
+        format.json do
+          render json: ProjectSerializer.new(current_user.projects).serialized_json
+        end
+
+        format.zip do
+          respond_with_zipped_projects
+        end
+      end
+
     else
       render json: {}, status: 401
     end
@@ -56,6 +65,21 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   private
+
+  def respond_with_zipped_projects
+    compessed_filestream = Zip::OutputStream.write_buffer do |zos|
+      current_user.projects.each do |project|
+        zos.put_next_entry "#{project.title.truncate(20)}.xlsx"
+        zos.print render_to_string(
+          layout: false, handlers: [:axlsx], formats: [:xlsx],
+          template: 'api/v1/project',
+          locals: {project: project}
+        )
+      end
+    end
+    compessed_filestream.rewind
+    send_data compessed_filestream.read, filename: 'projects.zip'
+  end
 
   def set_project
     @project = Project.find_by(slug: params[:slug])

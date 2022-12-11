@@ -6,8 +6,10 @@ import {Button} from "react-bootstrap";
 import ModalProjectForm from "../Modals/ModalProjectForm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
-import {searchFunc} from "../helpers/helpers";
+import {exportProject, searchFunc} from "../helpers/helpers";
 import SearchFilter from "../Project/SearchFilter";
+import { ImFileExcel } from "react-icons/im";
+import {Link} from "react-router-dom";
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
@@ -45,6 +47,15 @@ const Projects = () => {
     )
   })
 
+  const ExportProjects = () =>
+    <a href="/api/v1/projects.zip" download>
+      <button  onClick={exportProject} type="button" className="btn btn-outline-success d-inline-flex align-items-center">
+        <div style={{marginRight: 10}}>Export</div>
+        <ImFileExcel />
+      </button>
+    </a>
+
+
   return <Fragment>
     <section className="home-page">
       <div className="container py-5 h-100">
@@ -53,14 +64,17 @@ const Projects = () => {
             <div className="card">
               <div className="card-header p-3 d-flex justify-content-between">
                 <h5 className="mb-0 d-flex align-items-center"><i className="me-2 text-dark"><img src={tasksIcon} alt={"icon"}/></i>Projects list</h5>
-                <SearchFilter query={query} handleFilter={handleFilter} searchType={"project"} hidden={projects.length < 6} />
+                <div className='d-inline-flex align-items-center'>
+                  <SearchFilter query={query} handleFilter={handleFilter} searchType={"project"} hidden={projects.length < 6} />
+                  <ExportProjects />
+                </div>
               </div>
               <div className="card-body table-scroll">
                 <table className="table mb-0">
                   <thead>
-                  <tr>
-                    {titles}
-                  </tr>
+                    <tr>
+                      {titles}
+                    </tr>
                   </thead>
                   <tbody>
                     {projectItem}

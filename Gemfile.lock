@@ -81,6 +81,14 @@ GEM
       popper_js (>= 2.11.6, < 3)
       sassc-rails (>= 2.0.0)
     builder (3.2.4)
+    caxlsx (3.3.0)
+      htmlentities (~> 4.3, >= 4.3.4)
+      marcel (~> 1.0)
+      nokogiri (~> 1.10, >= 1.10.4)
+      rubyzip (>= 1.3.0, < 3)
+    caxlsx_rails (0.6.3)
+      actionpack (>= 3.1)
+      caxlsx (>= 3.0)
     concurrent-ruby (1.1.10)
     connection_pool (2.3.0)
     crass (1.0.6)
@@ -119,6 +127,7 @@ GEM
     globalid (1.0.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
+    htmlentities (4.3.4)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
@@ -256,6 +265,7 @@ GEM
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
     ruby2_keywords (0.0.5)
+    rubyzip (2.3.2)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -313,6 +323,8 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   bootstrap
+  caxlsx
+  caxlsx_rails
   debug
   devise
   dotenv-rails
@@ -334,6 +346,7 @@ DEPENDENCIES
   react-rails
   redis (~> 4.0)
   rspec-rails
+  rubyzip
   sassc-rails
   shoulda-matchers
   sprockets-rails

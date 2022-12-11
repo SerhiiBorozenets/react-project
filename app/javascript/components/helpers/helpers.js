@@ -69,6 +69,11 @@ export const removeProject = async (slug, projects, setProjects) => {
     .catch(resp => {console.log(resp)})
 }
 
+export const exportProject = async () => {
+  createCsrfToken()
+  await axios.get('/api/v1/projects.zip')
+}
+
 export const updateProject = async (project, projects, setProjects) => {
   createCsrfToken()
   await axios.patch(`/api/v1/projects/${project.slug}`, {project})

@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import Form from "react-bootstrap/Form";
 
 const SearchFilter = ({ query, handleFilter, searchType, hidden }) => {
-  return <Fragment>
+  return <div style={{marginRight: 10}}>
     { hidden ? null :
       <Form>
         <Form.Group onChange={handleFilter} value={query}>
@@ -10,7 +10,7 @@ const SearchFilter = ({ query, handleFilter, searchType, hidden }) => {
         </Form.Group>
       </Form>
     }
-  </Fragment>
+  </div>
 }
 
 export default SearchFilter

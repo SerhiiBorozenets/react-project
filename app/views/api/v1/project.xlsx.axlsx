@@ -1,0 +1,14 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "#{project.title.truncate(20)}") do |sheet|
+  sheet.add_row ["Task title", "Complexity", "Due date", "Status", "Completed"]
+  project.tasks.each do |task|
+    sheet.add_row [
+                    task.title,
+                    task.complexity,
+                    task.due_date&.strftime('%d %B, %Y'),
+                    task.status,
+                    task.completed
+                  ]
+  end
+end

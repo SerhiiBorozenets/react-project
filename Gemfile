@@ -28,6 +28,9 @@ gem "omniauth-rails_csrf_protection"
 gem "omniauth-github"
 gem 'omniauth-azure-activedirectory-v2'
 gem 'faker'
+gem 'caxlsx'
+gem 'caxlsx_rails'
+gem 'rubyzip'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

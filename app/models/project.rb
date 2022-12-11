@@ -28,11 +28,11 @@ class Project < ApplicationRecord
   end
 
   def progress
-    return "0" if tasks.length == 0
+    return "0" if tasks_count == 0
 
     task_completed = tasks.select {|task| task.completed }.count
-    tasks.length
-    (task_completed * 100) / tasks.length
+    tasks_count
+    (task_completed * 100) / tasks_count
   end
 
   def due_date
