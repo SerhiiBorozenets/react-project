@@ -1,14 +1,18 @@
 wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "#{project.title.truncate(20)}") do |sheet|
-  sheet.add_row ["Task title", "Complexity", "Due date", "Status", "Completed"]
-  project.tasks.each do |task|
+  title = sheet.styles.add_style(bg_color: "adb5bd", border: Axlsx::STYLE_THIN_BORDER, b: 'true')
+  sheet.add_row ["Task title", "Complexity", "Due date", "Status", "Completed"], style: title
+
+  project.tasks.sort_by { |a| a.completed ? 1 : 0 }.each do |task|
+    strike = sheet.styles.add_style(strike: task.completed)
+
     sheet.add_row [
                     task.title,
                     task.complexity,
                     task.due_date&.strftime('%d %B, %Y'),
                     task.status,
-                    task.completed
-                  ]
+                    task.completed.to_s
+                  ], style: strike
   end
 end
