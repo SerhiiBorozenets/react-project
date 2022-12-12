@@ -4,7 +4,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: %i[google_oauth2 github azure_activedirectory_v2]
 
   has_many :projects, dependent: :destroy
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: true
   validates :password, presence: true
   validates_format_of :email, with: URI::MailTo::EMAIL_REGEXP
 

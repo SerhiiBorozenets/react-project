@@ -17,8 +17,12 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
   end
 
   describe "GET index" do
-    it "has a 200 status code" do
-      get :index
+    it "has a 200 status code with json format" do
+      get :index, params: { format: 'json' }
+      expect(response.status).to eq(200)
+    end
+    it "has a 200 status code with zip format" do
+      get :index, params: { format: 'zip' }
       expect(response.status).to eq(200)
     end
   end

@@ -37,5 +37,9 @@ RSpec.describe Project, :type => :model do
       expect(project.update(slug: "project-2")).to be_falsey
       expect(project.errors[:slug].join('')).to eq "is immutable!"
     end
+
+    it 'prevent duplicate project`s titles in one user' do
+      expect(project).to validate_uniqueness_of(:title).scoped_to(:user_id)
+    end
   end
 end

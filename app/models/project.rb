@@ -2,7 +2,7 @@ class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
   belongs_to :user
   validates :slug, uniqueness: true
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: { scope: :user_id }
   validate :slug_not_changed
 
   before_create :slugify

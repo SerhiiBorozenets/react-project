@@ -32,5 +32,26 @@ RSpec.describe Task, :type => :model do
       expect(task.complexity).to eq "Advanced"
       expect(task.status).to eq "Low"
     end
+
+    it 'must be uniq per title and due date scopes' do
+      invalid_duplicate_task = build :task, project_id: project.id, title: task.title, due_date: task.due_date
+      expect(invalid_duplicate_task).to be_invalid
+    end
+
+    it 'is valid with different due dates and sames titles' do
+      correct_duplicate_task = build :task, project_id: project.id, title: task.title, due_date: task.due_date - 2.days
+      expect(correct_duplicate_task).to be_valid
+    end
+
+    it 'is valid with different titles and sames due date' do
+      correct_duplicate_task = build :task, project_id: project.id, title: "New #{task.title}", due_date: task.due_date
+      expect(correct_duplicate_task).to be_valid
+    end
+
+    it 'is valid for different projects that have tasks with the same titles and due dates' do
+      project_new = create :project
+      duplicate_task = build :task, project_id: project_new.id, title: task.title, due_date: task.due_date
+      expect(duplicate_task).to be_valid
+    end
   end
 end

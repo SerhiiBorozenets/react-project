@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe User, :type => :model do
+RSpec.describe User, type: :model do
   let!(:user) { create :user }
 
   context 'Relationships' do
@@ -8,6 +8,7 @@ RSpec.describe User, :type => :model do
   end
 
   context 'Validations' do
+    subject { FactoryBot.build(:user) }
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:password) }
 
@@ -26,6 +27,9 @@ RSpec.describe User, :type => :model do
     it 'is not valid email' do
       user.email = "qwerty"
       expect(user.valid?).to be_falsey
+    end
+    it 'is invalid if the email is not unique' do
+      User.create(email: user.email).invalid?
     end
   end
 end
