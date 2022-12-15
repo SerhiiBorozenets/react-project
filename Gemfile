@@ -43,5 +43,6 @@ group :test do
 end
 
 group :development do
+  gem 'simplecov'
   gem "web-console"
 end
