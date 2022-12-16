@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {createProject} from "../helpers/helpers";
+import {checkProjectTitle, createProject} from "../helpers/helpers";
 
 const ModalProjectForm = ({ projects, setProjects, onChangeProject, handleShow, project, show }) => {
   const [disable, setDisable] = useState(true)
@@ -10,13 +10,8 @@ const ModalProjectForm = ({ projects, setProjects, onChangeProject, handleShow, 
   const onClickSave = () => {
     createProject(project, projects, setProjects).then(handleShow())
   }
-
   useEffect(()=> {
-    if(project.title) {
-      setDisable(false)
-    } else {
-      setDisable(true)
-    }
+    setDisable(!checkProjectTitle(project, projects))
   }, [project.title])
 
   return <Modal show={show} onHide={handleShow} animation={false}>

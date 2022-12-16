@@ -112,3 +112,21 @@ export const searchFunc = (obj, query) => {
     );
   });
 }
+
+export const checkTaskTitle = (task, project) => {
+  if (!task.title) return null
+
+  const isSameTitles = project.included.filter(incl => {
+    return incl.attributes.title.toLowerCase() === task.title.toLowerCase().trim()
+  })
+  return task.title && (isSameTitles.length === 0)
+}
+
+export const checkProjectTitle = (project, projects) => {
+  if (!project.title) return null
+
+  const isSameTitles = projects.filter(prj => {
+    return prj.attributes.title.toLowerCase() === project.title.toLowerCase().trim()
+  })
+  return project.title && (isSameTitles.length === 0)
+}

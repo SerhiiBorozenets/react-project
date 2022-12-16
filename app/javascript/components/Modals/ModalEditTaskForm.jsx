@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {updateTask} from "../helpers/helpers";
+import {checkTaskTitle, checkTitle, updateTask} from "../helpers/helpers";
 
 const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, setProject}) => {
   const [disable, setDisable] = useState(true)
@@ -20,11 +20,7 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, 
   }
 
   useEffect(()=> {
-    if(editTask.title) {
-      setDisable(false)
-    } else {
-      setDisable(true)
-    }
+    setDisable(!checkTaskTitle(editTask, project))
   }, [editTask.title])
 
   return <Modal show={show} onHide={handleShow} animation={false}>
