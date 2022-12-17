@@ -7,10 +7,8 @@ RSpec.describe Api::V1::TasksController, :type => :controller do
   let!(:task) { attributes_for :task, project_id: project.id }
   let!(:task2) { create :task, project_id: project.id }
 
-  subject { post :create, :params => { task: task, project_id: project.id, format: :json } }
-
-  before(:each) do
-    sign_in(user)
+  before(:each) do |test|
+    sign_in(user) unless test.metadata[:logged_out]
   end
 
   it ':project factory works' do
@@ -21,16 +19,18 @@ RSpec.describe Api::V1::TasksController, :type => :controller do
     expect(task2).to be_valid
   end
 
-  describe "responds to" do
-    it "responds to json formats when provided in the params" do
+  describe "POST" do
+    subject { post :create, :params => { task: task, project_id: project.id, format: :json } }
+
+    before(:each) do
       subject
+    end
+
+    it "responds to json formats when provided in the params" do
       expect(response.media_type).to eq "application/json"
     end
-  end
 
-  describe "POST" do
-    it "creates a Project with data" do
-      subject
+    it "creates tasks" do
       task_saved = Task.find_by(title: task[:title])
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
@@ -60,11 +60,19 @@ RSpec.describe Api::V1::TasksController, :type => :controller do
                                                      }
                                                    }]
     end
+    it "not allow create tasks for non sigh_in user", :logged_out do
+      expect([JSON.parse(response.body)]).to eq [{"error" => "You need to sign in or sign up before continuing."}]
+    end
   end
 
   describe "PATCH" do
+    subject { post :update, :params => { task: { title: "New task title", completed: !task2.completed, project_id: project.id }, id: task2.id, format: :json } }
+
+    before(:each) do
+      subject
+    end
+
     it "updates a Task and returns data" do
-      post :update, :params => { task: { title: "New task title", completed: !task2.completed, project_id: project.id }, id: task2.id, format: :json }
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
                                                      {
@@ -93,11 +101,17 @@ RSpec.describe Api::V1::TasksController, :type => :controller do
                                                      }
                                                  }]
     end
+    it "not allow update tasks for non sigh_in user", :logged_out do
+      expect([JSON.parse(response.body)]).to eq [{"error" => "You need to sign in or sign up before continuing."}]
+    end
   end
 
   describe "DELETE" do
     it "removes task" do
       expect { delete :destroy, params: { id: task2.id } }.to change(Task, :count).by(-1)
+    end
+    it "not allow delete tasks for non sigh_in user", :logged_out do
+      expect { delete :destroy, params: { id: task2.id } }.to change(Task, :count).by(0)
     end
   end
 end

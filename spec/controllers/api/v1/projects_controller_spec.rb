@@ -6,10 +6,8 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
   let!(:project) {create :project }
   let(:user) { project.user }
 
-  subject { post :create, params: { project: project_attr, format: :json } }
-
-  before(:each) do
-    sign_in(user)
+  before(:each) do |test|
+    sign_in(user) unless test.metadata[:logged_out]
   end
 
   it ':project factory works' do
@@ -25,18 +23,24 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
       get :index, params: { format: 'zip' }
       expect(response.status).to eq(200)
     end
-  end
-
-  describe "responds to" do
-    it "responds to json formats when provided in the params" do
-      subject
-      expect(response.media_type).to eq "application/json"
+    it "has a 401 status code for non sigh_in user", :logged_out do
+      get :index
+      expect(response.status).to eq(401)
     end
   end
 
   describe "POST" do
-    it "creates a Project with data" do
+    subject { post :create, params: { project: project_attr, format: :json } }
+
+    before(:each) do
       subject
+    end
+
+    it "responds to json formats when provided in the params" do
+      expect(response.media_type).to eq "application/json"
+    end
+
+    it "creates a Project with data" do
       project_saved = Project.find_by(title: project_attr[:title])
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
@@ -64,11 +68,20 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
                                                    "included" => []
                                                  }]
     end
+    it "not allow create project for non sigh_in user", :logged_out do
+      expect([JSON.parse(response.body)]).to eq [{"error" => "You need to sign in or sign up before continuing."}]
+      expect { subject }.to change(Project, :count).by(0)
+    end
   end
 
   describe "PATCH" do
+    subject { patch :update, params: { project: { title: "New title", user_id: user.id }, format: :json, slug: project.slug } }
+
+    before(:each) do
+      subject
+    end
+
     it "updates a Project and returns data" do
-      patch :update, params: { project: { title: "New title", user_id: user.id }, format: :json, slug: project.slug }
       expect([JSON.parse(response.body)]).to eq [{
                                                    "data"=>
                                                      {
@@ -95,11 +108,18 @@ RSpec.describe Api::V1::ProjectsController, :type => :controller do
                                                    "included" => []
                                                  }]
     end
+    it "not allow update projects for non sigh_in user", :logged_out do
+      expect([JSON.parse(response.body)]).to eq [{"error" => "You need to sign in or sign up before continuing."}]
+    end
   end
 
   describe "DELETE" do
+    subject { delete :destroy, params: { slug: project.slug } }
     it "removes project" do
-      expect { delete :destroy, params: { slug: project.slug } }.to change(Project, :count).by(-1)
+      expect { subject }.to change(Project, :count).by(-1)
+    end
+    it "not allow deleted projects for non sigh_in user", :logged_out do
+      expect { subject }.to change(Project, :count).by(0)
     end
   end
 end
