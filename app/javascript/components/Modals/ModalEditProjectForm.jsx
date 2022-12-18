@@ -11,7 +11,7 @@ const ModalEditProjectForm = ({ projects, setProjects, onChangeEditProject, hand
   }
 
   useEffect(()=> {
-    setDisable(!checkProjectTitle(editProject, projects))
+    setDisable(!checkProjectTitle(editProject, projects, { isEdit: true }))
   }, [editProject.title])
 
   return <Modal show={showEdit} onHide={handleShowEdit} animation={false}>

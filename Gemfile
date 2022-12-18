@@ -31,6 +31,7 @@ gem 'faker'
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'rubyzip'
+gem 'activeadmin'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
