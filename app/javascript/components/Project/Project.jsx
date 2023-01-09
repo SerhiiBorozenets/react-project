@@ -1,42 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { useParams } from 'react-router-dom';
-import axios from "axios";
 import Tasks from "./Tasks";
 import { Fragment } from 'react';
+import {useGetProjectTasksQuery} from "../../api/apiTasks";
+import Spinner from "../common/Spinner";
 
 const Project = () => {
-  const [project, setProject] = useState({})
-  const [loaded, setLoaded] = useState(false)
   const params = useParams();
   const [task, setTask] = useState({})
+  const {
+    data: project,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetProjectTasksQuery(params);
 
   const onChangeTask = (e) => {
     setTask(Object.assign({}, task, {[e.target.name]: e.target.value}))
   }
 
-  useEffect(()=> {
-    const url = `/api/v1/projects/${params.slug}`
-    axios.get(url)
-      .then(resp => {
-        setProject(resp.data)
-        setLoaded(true)
-      })
-      .catch(resp => console.log(resp))
-  }, [])
+  if (isLoading) {
+    return <Spinner />;
+  }
 
-  return(
+  if (isError) {
+    return <div>{error.status}</div>;
+  }
+
+  return(isSuccess &&
     <Fragment>
-      { loaded &&
-        <Fragment>
-          <Tasks project={project}
-                 setProject={setProject}
-                 tasks={project.included}
-                 task={task}
-                 setTask={setTask}
-                 onChangeTask={onChangeTask}
-          />
-        </Fragment>
-      }
+      <Fragment>
+        <Tasks project={project}
+               tasks={project.included}
+               task={task}
+               setTask={setTask}
+               onChangeTask={onChangeTask}
+        />
+      </Fragment>
     </Fragment>
   )
 }
