@@ -2,16 +2,16 @@ import React, {useEffect, useState} from "react";
 import TaskItem from "./TaskItem";
 import {searchFunc, sortTask} from "../helpers/helpers";
 
-const TasksTableBody = ({ tasks, project, setProject, query }) => {
+const TasksTableBody = ({ tasks, project, query }) => {
   const [sortedTasks, setSortedTasks] = useState([])
 
   useEffect(() => {
-    setSortedTasks(sortTask(tasks))
+    setSortedTasks(sortTask(...tasks))
   }, [tasks])
 
   const taskItem = searchFunc(sortedTasks, query).map((task) => {
     return (
-      <TaskItem key={task.attributes.id} task={task} project={project} setProject={setProject} />
+      <TaskItem key={task.attributes.id} task={task} project={project} />
     )
   })
 

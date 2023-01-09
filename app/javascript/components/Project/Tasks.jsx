@@ -6,7 +6,7 @@ import TasksTableHead from "./TasksTableHead";
 import TasksTableBody from "./TasksTableBody";
 import SearchFilter from "./SearchFilter";
 
-const Tasks = ({ project, setProject, onChangeTask, task, setTask, tasks }) => {
+const Tasks = ({ project, onChangeTask, task, setTask, tasks }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
   const columns = [
@@ -42,8 +42,8 @@ const Tasks = ({ project, setProject, onChangeTask, task, setTask, tasks }) => {
                 </div>
                 <div className="card-body table-scroll">
                   <table className="table mb-0">
-                    <TasksTableHead {...{ columns, project, setProject }} />
-                    <TasksTableBody {...{ tasks, project, setProject, query }} />
+                    <TasksTableHead {...{ columns, project }} />
+                    <TasksTableBody {...{ tasks, project, query }} />
                   </table>
                 </div>
                 <div className="card-footer text-end p-3">
@@ -61,7 +61,6 @@ const Tasks = ({ project, setProject, onChangeTask, task, setTask, tasks }) => {
         task={task}
         setTask={setTask}
         project={project}
-        setProject={setProject}
         show={show}
         handleShow={handleShow}
       />

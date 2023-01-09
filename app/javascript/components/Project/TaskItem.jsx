@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {PencilSquare, Trash} from 'react-bootstrap-icons';
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
@@ -7,9 +7,9 @@ import ModalEditTaskForm from "../Modals/ModalEditTaskForm";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { BsReception0, BsReception1, BsReception2, BsReception3, BsReception4 } from "react-icons/bs";
-import {removeTask, updateTask} from "../helpers/helpers";
+import {useRemoveTaskMutation, useUpdateTaskMutation} from "../../api/apiTasks";
 
-const TaskItem = ({ task, project, setProject }) => {
+const TaskItem = ({ task, project }) => {
   const badgeStatusMap = {
     No: 'dark',
     Low: 'success',
@@ -20,18 +20,24 @@ const TaskItem = ({ task, project, setProject }) => {
   const {title, due_date, status, complexity} = task.attributes
   const dueDateFormat = due_date ? moment(due_date).format('DD.MM.YYYY') : ''
   const [show, setShow] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const handleShow = () => setShow(p => !p);
+  const [updateTask] = useUpdateTaskMutation()
+  const [removeTask] = useRemoveTaskMutation()
 
-  const handleClick = (e) => {
-    setEditTask(Object.assign(editTask, {completed: e.target.checked}));
-    return updateTask(editTask, project, setProject);
-  };
   const removeTaskConfirm = () => {
-    sweetAlertRemoveTask({task, project, setProject}, removeTask)
+    sweetAlertRemoveTask(task, removeTask)
   }
+
   const onChangeEditTask = (e) => {
-    setEditTask(Object.assign({}, editTask, {[e.target.name]: e.target.value}))
+    setEditTask(Object.assign({}, editTask, {[e.target.name]: e.target.name === 'completed' ? e.target.checked : e.target.value}))
+    setIsChecked(true)
   }
+
+  useEffect(() => {
+    isChecked && updateTask(editTask);
+  }, [editTask.completed] )
+
   const bsReception = () => {
     switch (complexity) {
       case "None": return <BsReception0 size={25} />
@@ -48,7 +54,7 @@ const TaskItem = ({ task, project, setProject }) => {
         <Tippy content={` ${editTask.completed ? 'Mark as uncompleted' : 'Mark as completed'}`}>
           <input className="form-check-input checkbox-inline" type="checkbox" data-toggle='tooltip'
                  data-placement='right' data-original-title="tooltip here"
-                 onChange={e => handleClick(e)} checked={editTask.completed}
+                 onChange={onChangeEditTask} name='completed' checked={editTask.completed}
                  id={`default-${editTask.id}`} />
         </Tippy>
       </div>
@@ -87,7 +93,6 @@ const TaskItem = ({ task, project, setProject }) => {
       <ModalEditTaskForm
         onChangeEditTask={onChangeEditTask}
         project={project}
-        setProject={setProject}
         editTask={editTask}
         show={show}
         handleShow={handleShow}

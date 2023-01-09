@@ -2,12 +2,15 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {checkTaskTitle, updateTask} from "../helpers/helpers";
+import {checkTaskTitle} from "../helpers/helpers";
+import {useUpdateTaskMutation} from "../../api/apiTasks";
 
-const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, setProject}) => {
+const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project}) => {
   const [disable, setDisable] = useState(true)
   const STATUS_OPTIONS = ['No', 'Low', "Middle", "High"];
   const COMPLEXITY_OPTIONS = ['None', 'Elementary', "Intermediate", "Advanced", "Master"];
+  const [updateTask] = useUpdateTaskMutation()
+
   const statusOptions = STATUS_OPTIONS.map( (status, index) => {
     return <option key={index} value={status}>{status}</option>
   })
@@ -16,7 +19,7 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, 
   })
 
   const onHandleSave = () => {
-    updateTask(editTask, project, setProject).then(handleShow())
+    updateTask(editTask).then(handleShow())
   }
 
   useEffect(()=> {
@@ -37,7 +40,7 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, 
             rows="3"
             name="title"
             placeholder="Enter task title"
-            value={editTask.title}
+            value={editTask.title || ''}
             onChange={onChangeEditTask}
             autoFocus
           />
@@ -49,7 +52,7 @@ const ModalTaskForm = ({ handleShow, editTask, show, onChangeEditTask, project, 
             type="date"
             name="due_date"
             placeholder="Due date"
-            value={editTask.due_date}
+            value={editTask.due_date || ''}
             onChange={onChangeEditTask}
           />
         </Form.Group>

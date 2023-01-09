@@ -1,9 +1,8 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-export const sweetAlertRemoveTask = (objects, action) => {
+export const sweetAlertRemoveTask = (task, action) => {
   const MySwal = withReactContent(Swal)
-  const {task, project, setProject} = objects
   MySwal.fire({
     title: `Are you sure you want to remove ${task.attributes.title}?`,
     icon: 'warning',
@@ -13,14 +12,13 @@ export const sweetAlertRemoveTask = (objects, action) => {
     confirmButtonText: 'Remove'
   }).then((result) => {
     if (result.isConfirmed) {
-      action(task.id, project, setProject)
+      action(task.id)
     }
   })
 }
 
-export const sweetAlertRemoveProject = (objects, action) => {
+export const sweetAlertRemoveProject = (project, action) => {
   const MySwal = withReactContent(Swal)
-  const {project, projects, setProjects} = objects
   MySwal.fire({
     title: `Are you sure you want to remove ${project.attributes.title}?`,
     icon: 'warning',
@@ -30,7 +28,7 @@ export const sweetAlertRemoveProject = (objects, action) => {
     confirmButtonText: 'Remove'
   }).then((result) => {
     if (result.isConfirmed) {
-      action(project.attributes.slug, projects, setProjects)
+      action(project.attributes.slug)
     }
   })
 }

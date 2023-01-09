@@ -2,12 +2,15 @@ import React, {useEffect, useRef, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {checkTaskTitle, checkTitle, createTask} from "../helpers/helpers";
+import {checkTaskTitle} from "../helpers/helpers";
+import {useAddTaskMutation} from "../../api/apiTasks";
 
-const ModalTaskForm = ({ project, setProject, handleShow, task, setTask, show, onChangeTask }) => {
+const ModalTaskForm = ({ project, handleShow, task, show, onChangeTask }) => {
   const [disable, setDisable] = useState(true)
   const STATUS_OPTIONS = ['No', 'Low', "Middle", "High"];
   const COMPLEXITY_OPTIONS = ['None', 'Elementary', "Intermediate", "Advanced", "Master"];
+  const [addTask] = useAddTaskMutation()
+
   const statusOptions = STATUS_OPTIONS.map( (status, index) => {
     return <option key={index} value={status}>{status}</option>
   })
@@ -16,7 +19,8 @@ const ModalTaskForm = ({ project, setProject, handleShow, task, setTask, show, o
   })
 
   const onProjectSave = () => {
-    createTask(project, setProject, task, setTask).then(handleShow())
+    const project_id = project.data.id
+    addTask({ task, project_id }).then(handleShow())
   }
 
   useEffect(()=> {
@@ -29,7 +33,7 @@ const ModalTaskForm = ({ project, setProject, handleShow, task, setTask, show, o
     </Modal.Header>
     <Modal.Body>
       <Form>
-        <Form.Group className="mb-3" onChange={onChangeTask} value={task.title}>
+        <Form.Group className="mb-3" onChange={onChangeTask} value={task.title || ''}>
           <Form.Label>Task title</Form.Label>
           <Form.Control type="text" as="textarea" rows="3" name="title" placeholder="Enter task title" autoFocus />
         </Form.Group>

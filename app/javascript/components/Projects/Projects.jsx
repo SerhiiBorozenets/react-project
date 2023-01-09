@@ -1,5 +1,4 @@
-import React, {useEffect, useState, Fragment} from "react";
-import axios from "axios";
+import React, {useState, Fragment} from "react";
 import tasksIcon from "../../../assets/images/tasks-solid.svg";
 import ProjectItem from "./ProjectItem";
 import {Button} from "react-bootstrap";
@@ -9,23 +8,24 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons'
 import {exportProject, searchFunc} from "../helpers/helpers";
 import SearchFilter from "../Project/SearchFilter";
 import { ImFileExcel } from "react-icons/im";
-import {Link} from "react-router-dom";
+import {useGetProjectsQuery} from "../../api/apiProjects";
+import Spinner from "../common/Spinner";
 
 const Projects = () => {
-  const [projects, setProjects] = useState([])
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(p => !p);
   const [project, setProject] = useState({})
+  const {
+    data: projects,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetProjectsQuery();
 
   const onChangeProject = (e) => {
     setProject(Object.assign({}, project, {[e.target.name]: e.target.value}))
   }
-
-  useEffect(()=> {
-    axios.get('/api/v1/projects.json')
-    .then( resp => setProjects(resp.data.data))
-    .catch(resp => console.log(resp))
-  }, [projects.length])
 
   const TITLES = ['Project name', 'Progress', 'Due date', 'Actions'];
   const titles = TITLES.map( (title, index) => {
@@ -37,12 +37,19 @@ const Projects = () => {
     setQuery(e.target.value)
   }
 
-  const projectItem = searchFunc(projects, query).map((project) => {
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <div>{error.status}</div>;
+  }
+
+  const projectItem = searchFunc(projects.data, query).map((project) => {
     return (
       <ProjectItem key={project.id}
                    project={project}
-                   setProjects={setProjects}
-                   projects={projects}
+                   projects={projects.data}
       />
     )
   })
@@ -55,8 +62,7 @@ const Projects = () => {
       </button>
     </a>
 
-
-  return <Fragment>
+  return isSuccess && <Fragment>
     <section className="home-page">
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
@@ -65,7 +71,7 @@ const Projects = () => {
               <div className="card-header p-3 d-flex justify-content-between">
                 <h5 className="mb-0 d-flex align-items-center"><i className="me-2 text-dark"><img src={tasksIcon} alt={"icon"}/></i>Projects list</h5>
                 <div className='d-inline-flex align-items-center'>
-                  <SearchFilter query={query} handleFilter={handleFilter} searchType={"project"} hidden={projects.length < 6} />
+                  <SearchFilter query={query} handleFilter={handleFilter} searchType={"project"} hidden={projects.data.length < 6} />
                   <ExportProjects />
                 </div>
               </div>
@@ -97,8 +103,7 @@ const Projects = () => {
       show={show}
       handleShow={handleShow}
       onChangeProject={onChangeProject}
-      projects={projects}
-      setProjects={setProjects}
+      projects={projects.data}
     />
   </Fragment>
 }

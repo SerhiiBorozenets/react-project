@@ -6,20 +6,21 @@ import {sweetAlertRemoveProject} from "../SweetAlert/alertHelpers";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ModalEditProjectForm from "../Modals/ModalEditProjectForm";
-import {removeProject} from "../helpers/helpers";
+import {useRemoveProjectMutation} from "../../api/apiProjects";
 
-const ProjectItem = ({ project, projects, setProjects }) => {
+const ProjectItem = ({ project, projects }) => {
   const {due_date, slug, title, progress} = project.attributes
   const dueDateFormat = due_date ? moment(due_date).format('DD.MM.YYYY') : ""
   const [editProject, setEditProject] = useState(project.attributes)
   const [showEdit, setShowEdit] = useState(false);
+  const [removeProject] = useRemoveProjectMutation()
 
   const handleShowEdit = () => setShowEdit(p => !p);
   const onChangeEditProject = (e) => {
     setEditProject(Object.assign({}, editProject, {[e.target.name]: e.target.value}))
   }
   const removeProjectConfirm = () => {
-    sweetAlertRemoveProject({project, projects, setProjects}, removeProject)
+    sweetAlertRemoveProject(project, removeProject)
   }
 
   return<tr className="fw-normal">
@@ -46,7 +47,6 @@ const ProjectItem = ({ project, projects, setProjects }) => {
       <ModalEditProjectForm
         editProject={editProject}
         projects={projects}
-        setProjects={setProjects}
         onChangeEditProject={onChangeEditProject}
         showEdit={showEdit}
         handleShowEdit={handleShowEdit}
