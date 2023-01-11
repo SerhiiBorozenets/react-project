@@ -83,7 +83,6 @@ body{
   box-shadow: 0 1px 2px 1px #ddd;
 }
 
-
 .or-container {
   align-items: center;
   color: #ccc;
@@ -113,4 +112,11 @@ body{
 
 a {
   text-decoration: none;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
