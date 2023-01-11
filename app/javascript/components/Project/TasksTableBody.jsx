@@ -4,7 +4,6 @@ import {searchFunc, sortTask} from "../helpers/helpers";
 
 const TasksTableBody = ({ tasks, project, query }) => {
   const [sortedTasks, setSortedTasks] = useState([])
-
   useEffect(() => {
     setSortedTasks(sortTask(...tasks))
   }, [tasks])
