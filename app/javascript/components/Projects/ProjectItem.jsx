@@ -9,21 +9,28 @@ import ModalEditProjectForm from "../Modals/ModalEditProjectForm";
 import {useRemoveProjectMutation} from "../../api/apiProjects";
 
 const ProjectItem = ({ project, projects }) => {
-  const {due_date, slug, title, progress} = project.attributes
+  const {image_url, due_date, slug, title, progress} = project.attributes
   const dueDateFormat = due_date ? moment(due_date).format('DD.MM.YYYY') : ""
   const [editProject, setEditProject] = useState(project.attributes)
+  const [editImage, setEditImage] = useState({})
   const [showEdit, setShowEdit] = useState(false);
   const [removeProject] = useRemoveProjectMutation()
-
   const handleShowEdit = () => setShowEdit(p => !p);
   const onChangeEditProject = (e) => {
     setEditProject(Object.assign({}, editProject, {[e.target.name]: e.target.value}))
   }
+  const handleEditFileChange = (e) => {
+    setEditImage(e.target.files[0]);
+  };
   const removeProjectConfirm = () => {
     sweetAlertRemoveProject(project, removeProject)
   }
 
   return<tr className="fw-normal">
+    <td className="align-middle">
+      {console.log("image_url", image_url)}
+      <img src={image_url} />
+    </td>
     <td className="align-middle">
       <Link to={`/projects/${slug}`}>
         <span> {title}</span>
@@ -50,6 +57,8 @@ const ProjectItem = ({ project, projects }) => {
         onChangeEditProject={onChangeEditProject}
         showEdit={showEdit}
         handleShowEdit={handleShowEdit}
+        handleEditFileChange={handleEditFileChange}
+        editImage={editImage}
       />
     </td>
   </tr>
