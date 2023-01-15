@@ -9,6 +9,7 @@ export const apiProjects = createApi({
     getProjects: builder.query({
       query: () => 'projects.json',
       providesTags: ['Projects'],
+      headers: { 'Content-Type': 'multipart/form-data' }
     }),
     addProject: builder.mutation({
       query: (project) => ({
@@ -20,8 +21,8 @@ export const apiProjects = createApi({
       invalidatesTags: ['Projects'],
     }),
     updateProject: builder.mutation({
-      query: (project) => ({
-        url: `projects/${project.slug}`,
+      query: (project, slug) => ({
+        url: `projects/${slug}`,
         method: 'PATCH',
         body: project,
         headers: { 'X-CSRF-Token': csrfToken },

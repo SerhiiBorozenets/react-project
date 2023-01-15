@@ -22,12 +22,17 @@ const Projects = () => {
     isError,
     error,
   } = useGetProjectsQuery();
+  const [image, setImage] = useState({});
+
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+  };
 
   const onChangeProject = (e) => {
     setProject(Object.assign({}, project, {[e.target.name]: e.target.value}))
   }
 
-  const TITLES = ['Project name', 'Progress', 'Due date', 'Actions'];
+  const TITLES = ['Image', 'Project name', 'Progress', 'Due date', 'Actions'];
   const titles = TITLES.map( (title, index) => {
     return <th scope="col" key={index}>{title}</th>
   })
@@ -103,6 +108,8 @@ const Projects = () => {
       show={show}
       handleShow={handleShow}
       onChangeProject={onChangeProject}
+      handleFileChange={handleFileChange}
+      image={image}
       projects={projects.data}
     />
   </Fragment>

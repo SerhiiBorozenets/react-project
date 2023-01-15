@@ -2,15 +2,22 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {checkProjectTitle} from "../helpers/helpers";
+import {checkProjectTitle, isEmpty} from "../helpers/helpers";
 import {useUpdateProjectMutation} from "../../api/apiProjects";
 
-const ModalEditProjectForm = ({ projects, onChangeEditProject, handleShowEdit, editProject, showEdit }) => {
+const ModalEditProjectForm = ({ projects, onChangeEditProject, handleShowEdit, editProject, showEdit, handleEditFileChange, editImage }) => {
   const [disable, setDisable] = useState(true)
   const [updateProject] = useUpdateProjectMutation()
 
   const onClickSave = () => {
-    updateProject(editProject).then(handleShowEdit())
+    const formData = new FormData()
+    const slug = editProject.slug
+    formData.append('project[title]', editProject.title)
+    formData.append('project[slug]', slug)
+    if (!isEmpty(editImage)) {
+      formData.append('project[image]', editImage)
+    }
+    updateProject(formData, slug).then(handleShowEdit())
   }
 
   useEffect(()=> {
@@ -33,6 +40,10 @@ const ModalEditProjectForm = ({ projects, onChangeEditProject, handleShowEdit, e
             onChange={onChangeEditProject}
             autoFocus
           />
+        </Form.Group>
+        <Form.Group controlId="formFile" onChange={handleEditFileChange} className="mb-3">
+          <Form.Label>Image <i><img src={editProject.image_url} /></i> </Form.Label>
+          <Form.Control type="file" />
         </Form.Group>
       </Form>
     </Modal.Body>

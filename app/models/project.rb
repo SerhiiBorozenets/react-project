@@ -1,5 +1,6 @@
 class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
+  has_one_attached :image
   belongs_to :user
   validates :slug, uniqueness: true
   validates :title, presence: true, uniqueness: { scope: :user_id }
@@ -37,5 +38,9 @@ class Project < ApplicationRecord
 
   def due_date
     tasks.pluck(:due_date).compact.max
+  end
+
+  def image_url
+    Rails.application.routes.url_helpers.url_for(image) if image.attached?
   end
 end

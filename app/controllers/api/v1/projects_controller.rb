@@ -1,6 +1,6 @@
 class Api::V1::ProjectsController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
 
   # GET /projects or /projects.json
@@ -48,6 +48,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
+    @project = Project.find_by(slug: params.dig("project", "slug"))
     if @project.update(project_params)
       render json: ProjectSerializer.new(@project, options).serialized_json
     else
@@ -85,7 +86,7 @@ class Api::V1::ProjectsController < ApplicationController
     @project = Project.find_by(slug: params[:slug])
   end
   def project_params
-    params.require(:project).permit(:title, :user_id)
+    params.require(:project).permit(:title, :user_id, :image, :slug)
   end
 
   def options

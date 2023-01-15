@@ -2,15 +2,18 @@ import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {checkProjectTitle} from "../helpers/helpers";
+import {checkProjectTitle, isEmpty} from "../helpers/helpers";
 import {useAddProjectMutation} from "../../api/apiProjects";
 
-const ModalProjectForm = ({ projects, onChangeProject, handleShow, project, show }) => {
+const ModalProjectForm = ({ projects, onChangeProject, handleShow, project, show, handleFileChange, image }) => {
   const [disable, setDisable] = useState(true)
   const [addProject] = useAddProjectMutation()
 
   const onClickSave = () => {
-    addProject(project).then(handleShow())
+    const formData = new FormData()
+    formData.append('project[title]', project.title)
+    formData.append('project[image]', image)
+    addProject(isEmpty(image) ? project :  formData).then(handleShow())
   }
 
   useEffect(()=> {
@@ -26,6 +29,10 @@ const ModalProjectForm = ({ projects, onChangeProject, handleShow, project, show
         <Form.Group className="mb-3" onChange={onChangeProject} value={project.title}>
           <Form.Label>Project title</Form.Label>
           <Form.Control type="text" name="title" placeholder="Enter project title" autoFocus />
+        </Form.Group>
+        <Form.Group controlId="formFile" onChange={handleFileChange} className="mb-3">
+          <Form.Label>Image</Form.Label>
+          <Form.Control type="file" />
         </Form.Group>
       </Form>
     </Modal.Body>
